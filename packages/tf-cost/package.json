@@ -12,7 +12,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "node --experimental-strip-types --test tests/*.test.ts"
+    "test": "tsc -p tsconfig.json && node --test tests/*.test.ts"
   },
   "devDependencies": {
     "typescript": "^5.8.3"

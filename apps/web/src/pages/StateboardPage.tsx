@@ -1,119 +1,177 @@
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
-import { useMemo, useState } from 'react';
-import { calculateCosts, scanTfState, SAMPLE_TFSTATE } from '@stateboard/tf-cost';
+import { useCallback, useEffect, useState } from 'react';
+import {
+  calculateCosts,
+  scanTfState,
+  SAMPLE_TFSTATE,
+  type CostReport,
+  type HexPlacement,
+  type InfraGraph,
+} from '@stateboard/tf-cost';
+import { StateboardMapView } from '../components/stateboard/StateboardMapView';
 
 export function StateboardPage() {
   const [raw, setRaw] = useState(() => JSON.stringify(SAMPLE_TFSTATE, null, 2));
+  const [graph, setGraph] = useState<InfraGraph | null>(null);
+  const [costs, setCosts] = useState<CostReport | null>(null);
+  const [selected, setSelected] = useState<HexPlacement | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [panelOpen, setPanelOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
 
-  const result = useMemo(() => {
-    try {
-      const json = JSON.parse(raw) as unknown;
-      const graph = scanTfState(json);
-      // sync path for local books
-      return { graph, costs: null as Awaited<ReturnType<typeof calculateCosts>> | null, err: null as string | null };
-    } catch (e) {
-      return { graph: null, costs: null, err: e instanceof Error ? e.message : 'Invalid JSON' };
-    }
-  }, [raw]);
-
-  const [costs, setCosts] = useState<Awaited<ReturnType<typeof calculateCosts>> | null>(null);
-
-  const runCost = async () => {
+  const run = useCallback(async (source: string) => {
+    setBusy(true);
     setError(null);
     try {
-      const json = JSON.parse(raw) as unknown;
-      const graph = scanTfState(json);
-      const report = await calculateCosts(graph, { priceSource: 'local' });
+      const json = JSON.parse(source) as unknown;
+      const g = scanTfState(json);
+      const report = await calculateCosts(g, { priceSource: 'local' });
+      setGraph(g);
       setCosts(report);
+      setSelected(null);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Cost failed');
+      setError(e instanceof Error ? e.message : 'Failed to scan / cost');
+      setGraph(null);
       setCosts(null);
+    } finally {
+      setBusy(false);
     }
+  }, []);
+
+  useEffect(() => {
+    void run(raw);
+    // initial sample only once
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onFile = async (file: File | null) => {
+    if (!file) return;
+    const text = await file.text();
+    setRaw(text);
+    await run(text);
   };
 
+  const line = costs?.lines.find((l) => l.nodeId === selected?.nodeId);
+
   return (
-    <div className="live-page" style={{ overflow: 'auto' }}>
-      <div className="live-page-bar" style={{ pointerEvents: 'auto' }}>
+    <div className="live-page">
+      <div className="live-page-bar">
         <Link to="/" className="live-page-back" aria-label="Back home">
           <ArrowLeft size={18} />
         </Link>
         <div>
           <p className="live-page-title">Stateboard</p>
-          <p className="live-page-sub">Scan state · cost module · map WIP</p>
+          <p className="live-page-sub">
+            {costs
+              ? `$${costs.totalMonthlyUsd.toFixed(0)}/mo · AWS $${costs.byCloud.aws.toFixed(0)} · Azure $${costs.byCloud.azure.toFixed(0)} · GCP $${costs.byCloud.gcp.toFixed(0)}`
+              : 'Scan state · draw estate · calculate cost'}
+          </p>
         </div>
-        <span className="live-page-badge">WIP</span>
+        <button
+          type="button"
+          className="live-page-badge"
+          style={{ cursor: 'pointer', border: 'none' }}
+          onClick={() => setPanelOpen((v) => !v)}
+        >
+          {panelOpen ? 'Hide' : 'State'}
+        </button>
       </div>
 
-      <div style={{ padding: '5rem 1.25rem 2rem', maxWidth: 960, margin: '0 auto' }}>
-        <p style={{ color: '#8f9097', marginTop: 0 }}>
-          Paste <code>terraform.tfstate</code> JSON. Map rendering reuses the RTS lab; cost comes from{' '}
-          <code>@stateboard/tf-cost</code>.
-        </p>
-        <textarea
-          value={raw}
-          onChange={(e) => setRaw(e.target.value)}
-          rows={14}
-          style={{
-            width: '100%',
-            fontFamily: 'ui-monospace, monospace',
-            fontSize: 12,
-            background: '#0d1c2d',
-            color: '#d4e4fa',
-            border: '1px solid #45474c',
-            borderRadius: 8,
-            padding: 12,
-          }}
-        />
-        <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
-          <button type="button" className="home-btn" onClick={() => void runCost()}>
-            Calculate costs
-          </button>
-          <Link className="home-btn home-btn--ghost" to="/live">
-            Open RTS lab
-          </Link>
+      {graph && costs ? (
+        <StateboardMapView graph={graph} costs={costs} onSelect={setSelected} />
+      ) : (
+        <div className="live-sandbox-wrap" style={{ display: 'grid', placeItems: 'center' }}>
+          <p style={{ color: '#8f9097' }}>{busy ? 'Scanning…' : 'Load a terraform.tfstate'}</p>
         </div>
-        {(error || result.err) && (
-          <p style={{ color: '#ffb4ab' }}>{error ?? result.err}</p>
-        )}
-        {result.graph && (
-          <p style={{ color: '#8f9097' }}>
-            Scanned <strong style={{ color: '#d4e4fa' }}>{result.graph.nodes.length}</strong> nodes ·{' '}
-            {result.graph.modules.length} modules
+      )}
+
+      <div className="live-sandbox-hud">
+        <div className="live-sandbox-resources">
+          <span>{graph ? `${graph.nodes.length} resources` : '—'}</span>
+          <span>{graph ? `${graph.modules.length} modules` : '—'}</span>
+          {costs && <span>uncovered {costs.uncoveredCount}</span>}
+          {costs && <span className="live-sandbox-timer">${costs.totalMonthlyUsd.toFixed(2)}/mo</span>}
+        </div>
+        {selected ? (
+          <p className="live-sandbox-selection">
+            {selected.address}
+            <span className="live-sandbox-team"> · {selected.cloud}</span>
+            <span>
+              {' '}
+              · ${selected.monthlyUsd.toFixed(2)}/mo
+              {line ? ` · ${line.basis}` : ''}
+            </span>
+          </p>
+        ) : (
+          <p className="live-sandbox-selection live-sandbox-selection--muted">
+            Click a resource sprite · cost bar = relative $/mo
           </p>
         )}
-        {costs && (
-          <div
+      </div>
+
+      {panelOpen && (
+        <div
+          style={{
+            position: 'absolute',
+            top: '4.5rem',
+            right: '0.75rem',
+            zIndex: 30,
+            width: 'min(380px, calc(100vw - 1.5rem))',
+            maxHeight: 'calc(100dvh - 8rem)',
+            overflow: 'auto',
+            padding: '0.85rem',
+            borderRadius: '0.75rem',
+            border: '1px solid rgb(76 215 246 / 0.22)',
+            background: 'rgb(5 20 36 / 0.92)',
+            backdropFilter: 'blur(12px)',
+          }}
+        >
+          <label style={{ display: 'block', fontSize: 12, color: '#8f9097', marginBottom: 6 }}>
+            Upload .tfstate
+          </label>
+          <input
+            type="file"
+            accept=".json,application/json,.tfstate"
+            onChange={(e) => void onFile(e.target.files?.[0] ?? null)}
+            style={{ color: '#d4e4fa', fontSize: 12, marginBottom: 10, width: '100%' }}
+          />
+          <textarea
+            value={raw}
+            onChange={(e) => setRaw(e.target.value)}
+            rows={10}
             style={{
-              marginTop: 16,
-              padding: 16,
+              width: '100%',
+              fontFamily: 'ui-monospace, monospace',
+              fontSize: 11,
+              background: '#0d1c2d',
+              color: '#d4e4fa',
+              border: '1px solid #45474c',
               borderRadius: 8,
-              border: '1px solid rgb(76 215 246 / 0.25)',
-              background: 'rgb(5 20 36 / 0.9)',
+              padding: 8,
             }}
+          />
+          <button
+            type="button"
+            className="home-btn"
+            style={{ marginTop: 10, width: '100%', justifyContent: 'center' }}
+            disabled={busy}
+            onClick={() => void run(raw)}
           >
-            <p style={{ margin: '0 0 8px', fontWeight: 600 }}>
-              Estimate · ${costs.totalMonthlyUsd.toFixed(2)}/mo
-            </p>
-            <p style={{ margin: 0, color: '#8f9097', fontSize: 14 }}>
-              AWS ${costs.byCloud.aws.toFixed(2)} · Azure ${costs.byCloud.azure.toFixed(2)} · GCP $
-              {costs.byCloud.gcp.toFixed(2)} · other ${costs.byCloud.other.toFixed(2)}
-            </p>
-            <p style={{ margin: '8px 0 0', color: '#8f9097', fontSize: 12 }}>
-              asOf {costs.asOf} · uncovered {costs.uncoveredCount}
-              {costs.warnings.length ? ` · ${costs.warnings.join('; ')}` : ''}
-            </p>
-            <ul style={{ fontSize: 13, paddingLeft: 18 }}>
-              {costs.lines.slice(0, 12).map((l) => (
-                <li key={l.nodeId}>
-                  {l.address}: ${l.monthlyUsd.toFixed(2)} ({l.confidence}) — {l.basis}
+            {busy ? 'Working…' : 'Scan + calculate'}
+          </button>
+          {error && <p style={{ color: '#ffb4ab', fontSize: 13 }}>{error}</p>}
+          {costs && (
+            <ul style={{ fontSize: 12, paddingLeft: 16, color: '#8f9097' }}>
+              {costs.byModule.map((m) => (
+                <li key={m.path || 'root'}>
+                  {m.path || '(root)'}: ${m.monthlyUsd.toFixed(2)} ({m.nodeCount})
                 </li>
               ))}
             </ul>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

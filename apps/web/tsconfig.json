@@ -16,7 +16,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
-    "paths": { "@/*": ["./src/*"] }
+    "paths": {
+      "@/*": ["./src/*"],
+      "@stateboard/tf-cost": ["../../packages/tf-cost/src/index.ts"]
+    }
   },
   "include": ["src"]
 }

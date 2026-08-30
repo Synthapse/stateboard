@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { calculateCosts, scanTfState, SAMPLE_TFSTATE } from '../src/index.ts';
+import { calculateCosts, scanTfState, SAMPLE_TFSTATE } from '../dist/index.js';
 
 describe('tf-cost', () => {
   it('scans sample and estimates by cloud', async () => {
