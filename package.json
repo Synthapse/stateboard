@@ -1,0 +1,15 @@
+{
+  "name": "stateboard",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Terraform state visualizer — RTS hex graphics + tf-cost calculation module",
+  "workspaces": [
+    "apps/web",
+    "packages/tf-cost"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @stateboard/web",
+    "build": "npm run build -w @stateboard/tf-cost && npm run build -w @stateboard/web",
+    "test": "npm run test -w @stateboard/tf-cost"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "asOf": "2026-08-01",
+  "compute": {
+    "westeurope": {
+      "Standard_B1s": 0.0104,
+      "Standard_D2s_v3": 0.096
+    }
+  },
+  "disk": {
+    "westeurope": { "Premium_LRS": 0.15 }
+  },
+  "database": {
+    "westeurope": { "Basic": 5.0 }
+  },
+  "network": {
+    "westeurope": { "load_balancer": 18.0 }
+  },
+  "object": {
+    "westeurope": { "hot": 0.018 }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "asOf": "2026-08-01",
+  "compute": {
+    "us-central1": {
+      "e2-micro": 0.0084,
+      "n1-standard-1": 0.0475
+    }
+  },
+  "disk": {
+    "us-central1": { "pd-ssd": 0.17 }
+  },
+  "database": {
+    "us-central1": { "db-f1-micro": 0.015 }
+  },
+  "network": {
+    "us-central1": { "forwarding_rule": 18.0 }
+  },
+  "object": {
+    "us-central1": { "standard": 0.02 }
+  }
+}
