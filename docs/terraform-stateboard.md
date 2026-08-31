@@ -1,36 +1,29 @@
 # Terraform Stateboard — Plan
 
 **Codename:** Stateboard  
-**Genre:** Infra map — **scan** Terraform state → **draw** full estate on RTS-style hex board → **CostCalculator** gets $/mo per cloud  
-**Status:** Design only  
-**Graphics:** Same family as Ascension Live (`/live`) — hex prisms, billboard sprites, selection ring, path ghosts, Slate Tactical HUD  
-**Not** a game; no combat / move orders
+**Genre:** Infra map — **scan Terraform repo (HCL)** via **.NET API** → **draw** architecture on RTS hex board → **cost** $/mo by cloud  
+**Status:** MVP in repo (`src/Stateboard.Api` + `apps/web`)  
+**Graphics:** Same family as Ascension Live — hex prisms, billboard sprites, Slate Tactical HUD  
 
-**Related:**
-- [rts-mode.md](rts-mode.md) · Live sandbox `src/TTS.Web/src/components/live/`
-- [DESIGN.md](DESIGN.md) — palette
-- [company-sim.md](company-sim.md) — separate product, shared platform feel
+See also [architecture.md](architecture.md).
 
 ---
 
 ## 1. Product promise
 
 ```
-terraform.tfstate
-    → SCAN (every resource / instance)
-    → DRAW entire infrastructure on RTS hex map
-    → COST MODULE gets unit prices + calculates $ / month
-         by cloud · module · type · family
+git repo with *.tf
+    → .NET SCANNER (resources / modules / refs)
+    → DRAW architecture on RTS hex map
+    → COST MODULE estimates $ / month by cloud
 ```
-
-> Drop state in → see the estate like an RTS board → **CostCalculator** shows what it costs.
 
 | Pillar | Meaning |
 |--------|---------|
-| **Graphics = RTS** | Hex + sprites like `/live` |
-| **Scan** | Full state parse — nothing omitted |
-| **Draw all** | Every instance on the board |
-| **Cost calculation module** | **Gets** prices (local book and/or live API) and **calculates** monthly cost per resource and per cloud |
+| **Backend = .NET** | Clone/scan repo, graph + cost JSON |
+| **Scan source** | HCL in another repo (not browser-only tfstate paste) |
+| **Graphics = RTS** | Hex + sprites |
+| **Cost** | Local pricebooks (live APIs later) |
 
 ---
 

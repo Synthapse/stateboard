@@ -1,0 +1,111 @@
+name: "[PROD] Stateboard API"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'fixtures/**'
+      - 'Dockerfile'
+      - '.dockerignore'
+      - '.github/workflows/api_prod.yml'
+  workflow_dispatch:
+
+env:
+  PROJECT_ID: cognispace
+  REGION: ${{ vars.STATEBOARD_GCP_REGION || 'europe-central2' }}
+  GAR_LOCATION: ${{ vars.STATEBOARD_GCP_REGION || 'europe-central2' }}
+  SERVICE: ${{ vars.STATEBOARD_API_SERVICE || 'stateboard-api' }}
+  ENVIRONMENT: prod
+  GEMINI_SECRET_ID: ${{ vars.STATEBOARD_GEMINI_SECRET_ID || 'stateboard-gemini-api-key' }}
+  CORS_ALLOWED_ORIGINS: https://${{ vars.STATEBOARD_FRONTEND_DOMAIN || 'stateboard.synthapse.xyz' }}
+
+jobs:
+  deploy:
+    permissions:
+      contents: read
+      id-token: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Google Auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.STATEBOARD_GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Sync Gemini API key to Secret Manager
+        id: gemini_sync
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          if [ -z "$GEMINI_API_KEY" ]; then
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "GEMINI_API_KEY not set — GenAI will use local heuristic fallback."
+            exit 0
+          fi
+          printf '%s' "$GEMINI_API_KEY" | gcloud secrets versions add "$GEMINI_SECRET_ID" \
+            --data-file=- \
+            --project="$PROJECT_ID" 2>/dev/null || \
+          printf '%s' "$GEMINI_API_KEY" | gcloud secrets create "$GEMINI_SECRET_ID" \
+            --replication-policy=automatic \
+            --data-file=- \
+            --project="$PROJECT_ID"
+          echo "configured=true" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push container
+        run: |
+          gcloud auth configure-docker "${GAR_LOCATION}-docker.pkg.dev" --quiet
+          IMAGE="${GAR_LOCATION}-docker.pkg.dev/${PROJECT_ID}/${SERVICE}/${ENVIRONMENT}-${GITHUB_SHA}"
+          docker build -t "$IMAGE" .
+          docker push "$IMAGE"
+          echo "IMAGE=$IMAGE" >> "$GITHUB_ENV"
+
+      - name: Deploy to Cloud Run (with Gemini)
+        if: steps.gemini_sync.outputs.configured == 'true'
+        id: deploy_gemini
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          service: ${{ env.SERVICE }}
+          region: ${{ env.REGION }}
+          image: ${{ env.IMAGE }}
+          flags: >-
+            --port=8080
+            --timeout=300
+            --memory=512Mi
+            --cpu=1
+            --max-instances=3
+            --allow-unauthenticated
+          secrets: GEMINI_API_KEY=${{ env.GEMINI_SECRET_ID }}:latest
+          env_vars: CORS_ALLOWED_ORIGINS=${{ env.CORS_ALLOWED_ORIGINS }}
+
+      - name: Deploy to Cloud Run (no Gemini)
+        if: steps.gemini_sync.outputs.configured != 'true'
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          service: ${{ env.SERVICE }}
+          region: ${{ env.REGION }}
+          image: ${{ env.IMAGE }}
+          flags: >-
+            --port=8080
+            --timeout=300
+            --memory=512Mi
+            --cpu=1
+            --max-instances=3
+            --allow-unauthenticated
+          env_vars: CORS_ALLOWED_ORIGINS=${{ env.CORS_ALLOWED_ORIGINS }}
+
+      - name: Show API URL
+        run: |
+          URL="${{ steps.deploy_gemini.outputs.url || steps.deploy.outputs.url }}"
+          echo "Deployed: $URL"
+          echo "Set VITE_API_URL to your custom API host or this run.app URL for the frontend build."

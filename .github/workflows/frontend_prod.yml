@@ -1,0 +1,59 @@
+name: "[PROD] Stateboard frontend"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/web/**'
+      - 'packages/tf-cost/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/frontend_prod.yml'
+  workflow_dispatch:
+
+env:
+  PROJECT_ID: cognispace
+  FRONTEND_BUCKET: ${{ vars.STATEBOARD_FRONTEND_BUCKET || 'stateboard-synthapse-frontend' }}
+  # Set STATEBOARD_API_URL after first API deploy (run.app or Cloudflare custom host)
+  API_URL: ${{ vars.STATEBOARD_API_URL || 'https://api.stateboard.synthapse.xyz' }}
+
+jobs:
+  deploy:
+    permissions:
+      contents: read
+      id-token: write
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Google Auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.STATEBOARD_GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Build web app
+        run: npm ci && npm run build
+        env:
+          VITE_API_URL: ${{ env.API_URL }}
+
+      - name: Upload to GCS
+        run: |
+          gsutil -m rsync -r -d apps/web/dist "gs://${FRONTEND_BUCKET}"
+          gsutil -m setmeta -h "Cache-Control:public, max-age=300" "gs://${FRONTEND_BUCKET}/**"
+
+      - name: Site URL
+        run: |
+          echo "Frontend bucket: gs://${FRONTEND_BUCKET}"
+          echo "Point ${STATEBOARD_FRONTEND_DOMAIN:-stateboard.synthapse.xyz} at this bucket via Cloudflare."

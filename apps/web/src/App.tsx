@@ -5,7 +5,7 @@ import { StateboardPage } from './pages/StateboardPage';
 
 function Shell() {
   const { pathname } = useLocation();
-  const fullscreen = pathname === '/live' || pathname === '/stateboard';
+  const fullscreen = pathname === '/live' || pathname === '/stateboard' || pathname === '/';
 
   return (
     <div style={{ height: fullscreen ? '100%' : undefined }}>

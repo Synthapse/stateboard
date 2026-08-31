@@ -1,0 +1,45 @@
+{
+  "asOf": "2026-08-01",
+  "compute": {
+    "westeurope": {
+      "Standard_B1s": 0.0104,
+      "Standard_B2s": 0.0416,
+      "Standard_D2s_v3": 0.096,
+      "Standard_D4s_v3": 0.192,
+      "Standard_DS2_v2": 0.114,
+      "Standard_F2s_v2": 0.085
+    }
+  },
+  "disk": {
+    "westeurope": {
+      "Premium_LRS": 0.15,
+      "Standard_LRS": 0.04,
+      "StandardSSD_LRS": 0.08,
+      "UltraSSD_LRS": 0.25
+    }
+  },
+  "database": {
+    "westeurope": {
+      "Basic": 0.00685,
+      "S0": 0.02055,
+      "S1": 0.0411,
+      "GP_Gen5_2": 0.504,
+      "GP_S_Gen5_2": 0.504,
+      "Standard": 0.02055
+    }
+  },
+  "network": {
+    "westeurope": {
+      "load_balancer": 18.0,
+      "Standard": 18.0
+    }
+  },
+  "object": {
+    "westeurope": {
+      "hot": 0.018,
+      "cool": 0.01,
+      "Standard_LRS": 0.018,
+      "standard": 0.018
+    }
+  }
+}

@@ -33,7 +33,8 @@ function glow(ctx: CanvasRenderingContext2D, cx: number, cy: number, r: number, 
   ctx.fill();
 }
 
-function drawUnitIcon(ctx: CanvasRenderingContext2D, kind: LiveUnitKind) {
+/** Exported so Stateboard can paint the same RTS silhouettes. */
+export function drawUnitIcon(ctx: CanvasRenderingContext2D, kind: LiveUnitKind) {
   const cx = SIZE / 2;
   const cy = SIZE / 2 + 8;
   softShadow(ctx, cx, cy + 28, 36);
@@ -196,7 +197,8 @@ function drawUnitIcon(ctx: CanvasRenderingContext2D, kind: LiveUnitKind) {
   }
 }
 
-function drawBuildingIcon(ctx: CanvasRenderingContext2D, kind: LiveBuildingKind) {
+/** Exported so Stateboard can paint the same RTS building pads. */
+export function drawBuildingIcon(ctx: CanvasRenderingContext2D, kind: LiveBuildingKind) {
   const cx = SIZE / 2;
   const cy = SIZE / 2 + 10;
   softShadow(ctx, cx, cy + 30, 40);
@@ -272,7 +274,7 @@ function roundRect(
   ctx.closePath();
 }
 
-function textureFor(key: string, draw: (ctx: CanvasRenderingContext2D) => void): THREE.CanvasTexture {
+export function textureFor(key: string, draw: (ctx: CanvasRenderingContext2D) => void): THREE.CanvasTexture {
   let tex = texCache.get(key);
   if (tex) return tex;
   const canvas = document.createElement('canvas');

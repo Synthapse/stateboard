@@ -1,20 +1,30 @@
+# .NET
 bin/
 obj/
 .vs/
 *.user
 *.suo
-.DS_Store
-.env
-.env.*
-secrets.json
-match-state.json
-**/matches/
-node_modules/
-dist/
-.dev-*.log
+[Dd]ebug/
+[Rr]elease/
+artifacts/
+*.nupkg
 
+# Node
 node_modules/
 dist/
 *.tsbuildinfo
+.dev-*.log
+
+# Secrets / local
 .DS_Store
+.env
 .env*
+.env.*
+secrets.json
+**/appsettings.Local.json
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/terraform.tfvars
+terraform/*.auto.tfvars
+match-state.json
+**/matches/

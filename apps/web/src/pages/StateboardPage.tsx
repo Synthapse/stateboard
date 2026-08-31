@@ -1,177 +1,219 @@
 import { Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Layers, Settings, Sparkles } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
+import type { CostReport, HexPlacement, InfraGraph } from '@stateboard/tf-cost';
 import {
-  calculateCosts,
-  scanTfState,
-  SAMPLE_TFSTATE,
-  type CostReport,
-  type HexPlacement,
-  type InfraGraph,
-} from '@stateboard/tf-cost';
+  analyzeArchitecture,
+  scanArchitecture,
+  scanSample,
+  type ArchitectureAnalysis,
+  type ArchitectureScanResult,
+  type TerraformVisualization,
+} from '../api';
+import { ArchitectureInsightPanel } from '../components/stateboard/ArchitectureInsightPanel';
+import { SelectedResourcePanel } from '../components/stateboard/SelectedResourcePanel';
+import { SettingsPanel } from '../components/stateboard/SettingsPanel';
 import { StateboardMapView } from '../components/stateboard/StateboardMapView';
+import { StructureInspector } from '../components/stateboard/StructureInspector';
+
+type SidePanel = 'structure' | 'insight' | 'settings' | null;
 
 export function StateboardPage() {
-  const [raw, setRaw] = useState(() => JSON.stringify(SAMPLE_TFSTATE, null, 2));
+  const [gitUrl, setGitUrl] = useState('');
+  const [gitRef, setGitRef] = useState('');
+  const [terraformRoot, setTerraformRoot] = useState('');
   const [graph, setGraph] = useState<InfraGraph | null>(null);
   const [costs, setCosts] = useState<CostReport | null>(null);
+  const [viz, setViz] = useState<TerraformVisualization | null>(null);
   const [selected, setSelected] = useState<HexPlacement | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [panelOpen, setPanelOpen] = useState(false);
+  const [panel, setPanel] = useState<SidePanel>(null);
   const [busy, setBusy] = useState(false);
+  const [sourceLabel, setSourceLabel] = useState('fixture:sample');
+  const [analysis, setAnalysis] = useState<ArchitectureAnalysis | null>(null);
+  const [analysisBusy, setAnalysisBusy] = useState(false);
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
 
-  const run = useCallback(async (source: string) => {
-    setBusy(true);
-    setError(null);
+  const runAnalysis = useCallback(async (g: InfraGraph, c: CostReport) => {
+    setAnalysisBusy(true);
+    setAnalysisError(null);
     try {
-      const json = JSON.parse(source) as unknown;
-      const g = scanTfState(json);
-      const report = await calculateCosts(g, { priceSource: 'local' });
-      setGraph(g);
-      setCosts(report);
-      setSelected(null);
+      const result = await analyzeArchitecture(g, c);
+      setAnalysis(result);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to scan / cost');
-      setGraph(null);
-      setCosts(null);
+      setAnalysis(null);
+      setAnalysisError(e instanceof Error ? e.message : 'Analysis failed');
     } finally {
-      setBusy(false);
+      setAnalysisBusy(false);
     }
   }, []);
 
-  useEffect(() => {
-    void run(raw);
-    // initial sample only once
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const apply = useCallback(async (label: string, run: () => Promise<ArchitectureScanResult>) => {
+    setBusy(true);
+    setError(null);
+    setAnalysis(null);
+    setAnalysisError(null);
+    try {
+      const result = await run();
+      setGraph(result.graph);
+      setCosts(result.costs);
+      setViz(result.visualization);
+      setSourceLabel(label);
+      setSelected(null);
+      setPanel(null);
+      void runAnalysis(result.graph, result.costs);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Scan failed');
+      setGraph(null);
+      setCosts(null);
+      setViz(null);
+      setAnalysis(null);
+    } finally {
+      setBusy(false);
+    }
+  }, [runAnalysis]);
 
-  const onFile = async (file: File | null) => {
-    if (!file) return;
-    const text = await file.text();
-    setRaw(text);
-    await run(text);
+  useEffect(() => {
+    void apply('fixture:sample', () => scanSample());
+  }, [apply]);
+
+  const onScanRepo = () => {
+    if (!gitUrl.trim()) {
+      setError('Paste a git HTTPS URL of a Terraform repo.');
+      return;
+    }
+    void apply(gitUrl.trim(), () =>
+      scanArchitecture({
+        gitUrl: gitUrl.trim(),
+        ref: gitRef.trim() || undefined,
+        terraformRoot: terraformRoot.trim() || undefined,
+      }),
+    );
   };
 
-  const line = costs?.lines.find((l) => l.nodeId === selected?.nodeId);
+  const onSelectNode = (nodeId: string) => {
+    const p = viz?.placements.find((x) => x.nodeId === nodeId) ?? null;
+    setSelected(p);
+  };
+
+  const togglePanel = (next: SidePanel) => {
+    setPanel((cur) => (cur === next ? null : next));
+  };
+
+  const ready = Boolean(graph && costs);
 
   return (
     <div className="live-page">
-      <div className="live-page-bar">
-        <Link to="/" className="live-page-back" aria-label="Back home">
-          <ArrowLeft size={18} />
-        </Link>
-        <div>
-          <p className="live-page-title">Stateboard</p>
-          <p className="live-page-sub">
-            {costs
-              ? `$${costs.totalMonthlyUsd.toFixed(0)}/mo · AWS $${costs.byCloud.aws.toFixed(0)} · Azure $${costs.byCloud.azure.toFixed(0)} · GCP $${costs.byCloud.gcp.toFixed(0)}`
-              : 'Scan state · draw estate · calculate cost'}
-          </p>
-        </div>
+      <nav className="sb-rail" aria-label="Map tools">
         <button
           type="button"
-          className="live-page-badge"
-          style={{ cursor: 'pointer', border: 'none' }}
-          onClick={() => setPanelOpen((v) => !v)}
+          className={`sb-rail-btn${panel === 'structure' ? ' sb-rail-btn--active' : ''}`}
+          aria-label="Structure"
+          aria-expanded={panel === 'structure'}
+          title="Structure"
+          disabled={!ready}
+          onClick={() => togglePanel('structure')}
         >
-          {panelOpen ? 'Hide' : 'State'}
+          <Layers size={18} />
         </button>
-      </div>
+        <button
+          type="button"
+          className={`sb-rail-btn${panel === 'insight' ? ' sb-rail-btn--active' : ''}`}
+          aria-label="Architecture insight"
+          aria-expanded={panel === 'insight'}
+          title="Architecture insight (AI)"
+          disabled={!ready}
+          onClick={() => togglePanel('insight')}
+        >
+          <Sparkles size={18} />
+        </button>
+        <span className="sb-rail-sep" aria-hidden />
+        <button
+          type="button"
+          className={`sb-rail-btn${panel === 'settings' ? ' sb-rail-btn--active' : ''}`}
+          aria-label="Settings"
+          aria-expanded={panel === 'settings'}
+          title="Settings"
+          onClick={() => togglePanel('settings')}
+        >
+          <Settings size={18} />
+        </button>
+      </nav>
 
-      {graph && costs ? (
-        <StateboardMapView graph={graph} costs={costs} onSelect={setSelected} />
+      <Link to="/" className="sb-back" aria-label="Back home">
+        <ArrowLeft size={18} />
+      </Link>
+
+      {viz && graph && viz.placements.length > 0 ? (
+        <StateboardMapView
+          visualization={viz}
+          graph={graph}
+          selectedId={selected?.nodeId ?? null}
+          onSelect={setSelected}
+        />
       ) : (
         <div className="live-sandbox-wrap" style={{ display: 'grid', placeItems: 'center' }}>
-          <p style={{ color: '#8f9097' }}>{busy ? 'Scanning…' : 'Load a terraform.tfstate'}</p>
+          <p style={{ color: '#8f9097' }}>{busy ? 'Cloning & scanning…' : 'Loading architecture…'}</p>
         </div>
       )}
 
-      <div className="live-sandbox-hud">
-        <div className="live-sandbox-resources">
+      {panel === 'structure' && graph && costs && (
+        <StructureInspector
+          graph={graph}
+          costs={costs}
+          selectedId={selected?.nodeId ?? null}
+          sourceLabel={sourceLabel}
+          onSelectNode={onSelectNode}
+          onClose={() => setPanel(null)}
+        />
+      )}
+
+      {panel === 'insight' && (
+        <ArchitectureInsightPanel
+          analysis={analysis}
+          busy={analysisBusy}
+          error={analysisError}
+          onRefresh={() => {
+            if (graph && costs) void runAnalysis(graph, costs);
+          }}
+          onClose={() => setPanel(null)}
+        />
+      )}
+
+      {panel === 'settings' && (
+        <SettingsPanel
+          gitUrl={gitUrl}
+          gitRef={gitRef}
+          terraformRoot={terraformRoot}
+          busy={busy}
+          error={error}
+          onGitUrl={setGitUrl}
+          onGitRef={setGitRef}
+          onTerraformRoot={setTerraformRoot}
+          onScanRepo={onScanRepo}
+          onSample={() => void apply('fixture:sample', () => scanSample())}
+          onClose={() => setPanel(null)}
+        />
+      )}
+
+      {selected && graph && costs && (
+        <SelectedResourcePanel
+          graph={graph}
+          costs={costs}
+          selectedId={selected.nodeId}
+          onSelectNode={onSelectNode}
+          onClose={() => setSelected(null)}
+        />
+      )}
+
+      <div className="sb-hud">
+        <div className="sb-hud-row">
           <span>{graph ? `${graph.nodes.length} resources` : '—'}</span>
           <span>{graph ? `${graph.modules.length} modules` : '—'}</span>
-          {costs && <span>uncovered {costs.uncoveredCount}</span>}
-          {costs && <span className="live-sandbox-timer">${costs.totalMonthlyUsd.toFixed(2)}/mo</span>}
+          <span>{viz ? `${viz.edges.length} deps` : '—'}</span>
+          {costs && <span className="sb-hud-cost">${costs.totalMonthlyUsd.toFixed(2)}/mo</span>}
         </div>
-        {selected ? (
-          <p className="live-sandbox-selection">
-            {selected.address}
-            <span className="live-sandbox-team"> · {selected.cloud}</span>
-            <span>
-              {' '}
-              · ${selected.monthlyUsd.toFixed(2)}/mo
-              {line ? ` · ${line.basis}` : ''}
-            </span>
-          </p>
-        ) : (
-          <p className="live-sandbox-selection live-sandbox-selection--muted">
-            Click a resource sprite · cost bar = relative $/mo
-          </p>
-        )}
       </div>
-
-      {panelOpen && (
-        <div
-          style={{
-            position: 'absolute',
-            top: '4.5rem',
-            right: '0.75rem',
-            zIndex: 30,
-            width: 'min(380px, calc(100vw - 1.5rem))',
-            maxHeight: 'calc(100dvh - 8rem)',
-            overflow: 'auto',
-            padding: '0.85rem',
-            borderRadius: '0.75rem',
-            border: '1px solid rgb(76 215 246 / 0.22)',
-            background: 'rgb(5 20 36 / 0.92)',
-            backdropFilter: 'blur(12px)',
-          }}
-        >
-          <label style={{ display: 'block', fontSize: 12, color: '#8f9097', marginBottom: 6 }}>
-            Upload .tfstate
-          </label>
-          <input
-            type="file"
-            accept=".json,application/json,.tfstate"
-            onChange={(e) => void onFile(e.target.files?.[0] ?? null)}
-            style={{ color: '#d4e4fa', fontSize: 12, marginBottom: 10, width: '100%' }}
-          />
-          <textarea
-            value={raw}
-            onChange={(e) => setRaw(e.target.value)}
-            rows={10}
-            style={{
-              width: '100%',
-              fontFamily: 'ui-monospace, monospace',
-              fontSize: 11,
-              background: '#0d1c2d',
-              color: '#d4e4fa',
-              border: '1px solid #45474c',
-              borderRadius: 8,
-              padding: 8,
-            }}
-          />
-          <button
-            type="button"
-            className="home-btn"
-            style={{ marginTop: 10, width: '100%', justifyContent: 'center' }}
-            disabled={busy}
-            onClick={() => void run(raw)}
-          >
-            {busy ? 'Working…' : 'Scan + calculate'}
-          </button>
-          {error && <p style={{ color: '#ffb4ab', fontSize: 13 }}>{error}</p>}
-          {costs && (
-            <ul style={{ fontSize: 12, paddingLeft: 16, color: '#8f9097' }}>
-              {costs.byModule.map((m) => (
-                <li key={m.path || 'root'}>
-                  {m.path || '(root)'}: ${m.monthlyUsd.toFixed(2)} ({m.nodeCount})
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      )}
     </div>
   );
 }

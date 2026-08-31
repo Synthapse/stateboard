@@ -1,0 +1,38 @@
+{
+  "asOf": "2026-08-01",
+  "compute": {
+    "us-central1": {
+      "e2-micro": 0.0084,
+      "e2-small": 0.0168,
+      "e2-medium": 0.0336,
+      "n1-standard-1": 0.0475,
+      "n1-standard-2": 0.095,
+      "n2-standard-2": 0.0971
+    }
+  },
+  "disk": {
+    "us-central1": {
+      "pd-standard": 0.04,
+      "pd-balanced": 0.1,
+      "pd-ssd": 0.17
+    }
+  },
+  "database": {
+    "us-central1": {
+      "db-f1-micro": 0.015,
+      "db-g1-small": 0.05,
+      "db-n1-standard-1": 0.0825
+    }
+  },
+  "network": {
+    "us-central1": {
+      "forwarding_rule": 18.0
+    }
+  },
+  "object": {
+    "us-central1": {
+      "standard": 0.02,
+      "STANDARD": 0.02
+    }
+  }
+}

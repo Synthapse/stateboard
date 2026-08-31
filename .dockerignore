@@ -1,0 +1,14 @@
+.git
+.github
+**/.vs
+**/bin
+**/obj
+**/node_modules
+**/dist
+**/.env*
+**/appsettings.Local.json
+terraform/.terraform
+terraform/*.tfvars
+!terraform/terraform.tfvars.example
+**/*.md
+!README.md

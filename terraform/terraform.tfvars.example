@@ -1,0 +1,12 @@
+# Copy to terraform.tfvars and fill in your Synthapse GCP project.
+# Do not commit terraform.tfvars (gitignored).
+
+project_id           = "cognispace"
+region               = "europe-central2"
+api_service_name     = "stateboard-api"
+frontend_bucket_name = "stateboard-synthapse-frontend"
+frontend_domain      = "stateboard.synthapse.xyz"
+# Leave empty — europe-central2 does not support Cloud Run domain mappings.
+# After apply, CNAME api.stateboard.synthapse.xyz → terraform output api_url in Cloudflare.
+api_domain           = ""
+gemini_secret_id     = "stateboard-gemini-api-key"

@@ -16,7 +16,7 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  width: min(720px, calc(100% - 1.5rem));
+  width: min(520px, calc(100% - 5.5rem));
   padding: 0.55rem 0.85rem;
   border: 1px solid rgb(76 215 246 / 0.18);
   border-radius: 0.75rem;
@@ -27,6 +27,11 @@
 
 .live-page-bar > * {
   pointer-events: auto;
+}
+
+.live-page-bar > div {
+  flex: 1;
+  min-width: 0;
 }
 
 .live-page-back {

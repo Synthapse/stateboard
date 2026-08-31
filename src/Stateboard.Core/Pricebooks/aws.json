@@ -1,0 +1,44 @@
+{
+  "asOf": "2026-08-01",
+  "compute": {
+    "us-east-1": {
+      "t3.micro": 0.0104,
+      "t3.small": 0.0208,
+      "t3.medium": 0.0416,
+      "t3.large": 0.0832,
+      "m5.large": 0.096,
+      "m5.xlarge": 0.192,
+      "m6i.large": 0.096,
+      "m6i.xlarge": 0.192
+    }
+  },
+  "disk": {
+    "us-east-1": {
+      "gp2": 0.1,
+      "gp3": 0.08,
+      "io1": 0.125,
+      "io2": 0.125
+    }
+  },
+  "database": {
+    "us-east-1": {
+      "db.t3.micro": 0.017,
+      "db.t3.small": 0.034,
+      "db.t3.medium": 0.068,
+      "db.m5.large": 0.171
+    }
+  },
+  "network": {
+    "us-east-1": {
+      "nat_gateway": 32.4,
+      "alb": 16.2,
+      "nlb": 16.2
+    }
+  },
+  "object": {
+    "us-east-1": {
+      "standard": 0.023,
+      "STANDARD": 0.023
+    }
+  }
+}
