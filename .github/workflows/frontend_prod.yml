@@ -15,7 +15,7 @@ env:
   PROJECT_ID: cognispace
   FRONTEND_BUCKET: ${{ vars.STATEBOARD_FRONTEND_BUCKET || 'stateboard-synthapse-frontend' }}
   # Set STATEBOARD_API_URL after first API deploy (run.app or Cloudflare custom host)
-  API_URL: ${{ vars.STATEBOARD_API_URL || 'https://api.stateboard.synthapse.xyz' }}
+  API_URL: https://stateboard-api-946555989276.europe-central2.run.app
 
 jobs:
   deploy:
