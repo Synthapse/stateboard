@@ -24,7 +24,7 @@ export function StateboardMapView({ visualization, graph, selectedId, onSelect }
     if (!host) return;
     let cancelled = false;
 
-    void createStateboardMap(host, visualization, graph, {
+    void createStateboardMap(host, visualization, {
       onSelect: (p) => {
         if (!cancelled) onSelectRef.current(p);
       },

@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import type { HexPlacement, InfraGraph, SpriteKind } from '@stateboard/tf-cost';
+import type { HexPlacement, SpriteKind } from '@stateboard/tf-cost';
 import type { DependencyEdge, TerraformVisualization } from '../../api';
 import { GROUP_META, GROUP_ORDER, type ResourceGroup } from './resourceGroups';
 import { createSelectionRing, createTfResourceSprite } from './tfSprites';
@@ -199,7 +199,6 @@ function drawResourceGroups(scene: THREE.Scene, placements: HexPlacement[]) {
 export async function createStateboardMap(
   host: HTMLElement,
   visualization: TerraformVisualization,
-  graph: InfraGraph,
   callbacks: StateboardMapCallbacks,
 ): Promise<StateboardMapHandle> {
   await waitForHost(host);
