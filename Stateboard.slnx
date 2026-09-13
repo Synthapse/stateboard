@@ -1,7 +1,7 @@
 <Solution>
-  <Folder Name="/src/">
-    <Project Path="src/Stateboard.Api/Stateboard.Api.csproj" />
-    <Project Path="src/Stateboard.Core/Stateboard.Core.csproj" />
+  <Folder Name="/Prove/">
+    <Project Path="Prove/Stateboard.Api/Stateboard.Api.csproj" />
+    <Project Path="Prove/Stateboard.Core/Stateboard.Core.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Stateboard.Tests/Stateboard.Tests.csproj" />

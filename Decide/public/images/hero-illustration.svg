@@ -1,0 +1,26 @@
+<svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Elements -->
+  <circle cx="300" cy="200" r="150" fill="#E3F2FD" opacity="0.5"/>
+  <circle cx="300" cy="200" r="100" fill="#BBDEFB" opacity="0.3"/>
+  
+  <!-- Chart Elements -->
+  <rect x="150" y="150" width="300" height="200" rx="10" fill="white" stroke="#2196F3" stroke-width="2"/>
+  
+  <!-- Bar Chart -->
+  <rect x="180" y="250" width="40" height="80" fill="#2196F3"/>
+  <rect x="240" y="200" width="40" height="130" fill="#64B5F6"/>
+  <rect x="300" y="180" width="40" height="150" fill="#90CAF9"/>
+  <rect x="360" y="220" width="40" height="110" fill="#BBDEFB"/>
+  
+  <!-- Line Chart -->
+  <path d="M180 100 L240 150 L300 120 L360 180" fill="none" stroke="#F50057" stroke-width="3"/>
+  <circle cx="180" cy="100" r="4" fill="#F50057"/>
+  <circle cx="240" cy="150" r="4" fill="#F50057"/>
+  <circle cx="300" cy="120" r="4" fill="#F50057"/>
+  <circle cx="360" cy="180" r="4" fill="#F50057"/>
+  
+  <!-- Decorative Elements -->
+  <circle cx="100" cy="100" r="20" fill="#FF4081" opacity="0.2"/>
+  <circle cx="500" cy="300" r="30" fill="#2196F3" opacity="0.2"/>
+  <circle cx="450" cy="150" r="15" fill="#FF4081" opacity="0.2"/>
+</svg> 

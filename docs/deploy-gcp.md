@@ -95,8 +95,8 @@ Manual deploy: Actions → workflow → **Run workflow**.
 ## 5. Local parity
 
 ```bash
-dotnet run --project src/Stateboard.Api --urls http://127.0.0.1:5281
-cd apps/web && npm run dev
+dotnet run --project Prove/Stateboard.Api --urls http://127.0.0.1:5281
+cd Prove/web && npm run dev
 ```
 
 Production frontend build:

@@ -1,0 +1,29 @@
+{
+  "apps": {
+    "GoogleAnalytics": {
+      "streamId": "",
+      "measurementId": ""
+    },
+    "PaymentAPI": {
+      "url": "http://localhost:8080",
+      "isProduction": true
+    },
+    "RaportingAPI": {
+      "url": "http://localhost:19707/",
+      "isProduction": true
+    },
+    "MASAPI": {
+      "url": "http://localhost:19707/",
+      "isProduction": true
+    },
+    "Firebase": {
+      "apiKey": "REDACTED",
+      "authDomain": "cognispace.firebaseapp.com",
+      "projectId": "cognispace",
+      "storageBucket": "cognispace.appspot.com",
+      "messagingSenderId": "946555989276",
+      "appId": "REDACTED",
+      "measurementId": "G-R8MG7V24XD"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+markdown
+fastapi
+google-cloud-storage
+google-generativeai
+markdown2
+jinja2
+reportlab
+uvicorn
+openai
+firebase-admin
+python-dotenv
