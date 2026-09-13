@@ -54,6 +54,8 @@ npm install && npm start
 - [ ] Rename GitHub repo `stateboard` → `insights` (when ready)
 - [ ] Archive Synthapse/Aureyo + Synthapse/Raporting
 
+**Next week:** see [docs/mvp-architecture.md](docs/mvp-architecture.md) — Architecture + MVP (M1–M5).
+
 ## Deploy
 
 Today: `stateboard.synthapse.xyz` / Cloud Run `stateboard-api` on cognispace.  
