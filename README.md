@@ -1,73 +1,60 @@
-# Stateboard
+# Insights (monorepo)
 
-Scan a **Terraform repository** → build an **architecture graph** → draw it on an **RTS hex map** → estimate **cloud cost**.
+**Decide** + **Narrate** + **Prove** in one repo (formerly Stateboard).  
+Legacy repos Aureyo / Raporting should be archived after deploy is green.
 
-Backend is **.NET**. The web app only renders.
+**North star:** weekly/monthly Digests (Slack / email) from BigQuery for `kih` · `lindle` · `yca`.
 
-## Architecture
+## Layout
 
 ```
-Git repo / local path / fixture
-        │
-        ▼
-┌──────────────────────┐
-│  Stateboard.Api (.NET)│
-│  • shallow git clone  │
-│  • scan *.tf (HCL)    │
-│  • cost pricebook     │
-└──────────┬───────────┘
-           │ JSON graph + costs
-           ▼
-┌──────────────────────┐
-│  apps/web (React)     │
-│  RTS hex visualization│
-└──────────────────────┘
+Decide/                 # on-demand UI (ex Aureyo)
+Narrate/                # Digest engine FastAPI (ex Raporting)
+Prove/
+  web/                  # hex map / cost / health UI
+  Stateboard.Api/       # .NET API
+  Stateboard.Core/      # HCL → graph, cost
+packages/tf-cost/       # shared TS helpers
 ```
 
-| Path | Role |
-|------|------|
-| `src/Stateboard.Api` | ASP.NET Core API |
-| `src/Stateboard.Core` | HCL scan, git clone, cost calc |
-| `fixtures/sample-terraform` | Demo infra |
-| `apps/web` | RTS map UI |
-| `packages/tf-cost` | Shared TS types / layout helpers (optional client tools) |
+Still three deployables from one git tree.
 
 ## Quick start
 
-Terminal 1 — API:
+### Prove API + web
 
 ```bash
-dotnet run --project src/Stateboard.Api --urls http://localhost:5281
+dotnet run --project Prove/Stateboard.Api --urls http://localhost:5281
+npm install && npm run dev
 ```
 
-Terminal 2 — UI:
+### Narrate
 
 ```bash
-npm install
-npm run dev
+cd Narrate
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
 ```
 
-- http://localhost:5173/stateboard — paste an external git URL or load the sample  
-- Pipeline: **clone → HCL scan → cost module → hex visualization**  
-- `POST /api/architecture/scan` `{ "gitUrl": "https://github.com/org/repo" }`  
-  returns `graph`, `costs`, and `visualization` (placements + dependency edges)
+Secrets: see `Narrate/SECRETS.md` — never commit Firebase/SA JSON.
 
-## Deploy (GCP + GitHub Actions)
+### Decide
 
-Production target: **`stateboard.synthapse.xyz`** (GCS + Cloudflare) and **`api.stateboard.synthapse.xyz`** (Cloud Run).
+```bash
+cd Decide
+cp src/config.example.json src/config.json   # local only; gitignored
+npm install && npm start
+```
 
-See **[docs/deploy-gcp.md](docs/deploy-gcp.md)** for Terraform, GitHub secrets/variables, and Cloudflare DNS.
+## Merge status
 
-## How repo → map works
+- [x] Import Decide + Narrate; folder layout `Decide/` `Narrate/` `Prove/`
+- [ ] Wire Digest schedule → Slack/email
+- [ ] Rename GitHub repo `stateboard` → `insights` (when ready)
+- [ ] Archive Synthapse/Aureyo + Synthapse/Raporting
 
-1. API clones the repo (shallow) or reads a local/fixture path.  
-2. Walks all `*.tf` files (skips `.terraform/`).  
-3. Extracts `resource` blocks, module folders, SKU/region attrs, and cross-refs (`aws_vpc.main.id`, `module.network…`).  
-4. Builds `InfraGraph` + `CostReport`.  
-5. Web lays nodes on hexes (by module cluster) and draws sprites + cost bars.
+## Deploy
 
-This is **source architecture** (HCL), not live cloud inventory. Remote state / `terraform plan` can be added later as another scan mode.
-
-## Org
-
-Maintained under **Synthapse**.
+Today: `stateboard.synthapse.xyz` / Cloud Run `stateboard-api` on cognispace.  
+See `docs/deploy-gcp.md`.

@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Stateboard.Core\Stateboard.Core.csproj" />
+    <ProjectReference Include="..\..\Prove\Stateboard.Core\Stateboard.Core.csproj" />
   </ItemGroup>
 
 </Project>

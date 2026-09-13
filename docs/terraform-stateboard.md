@@ -2,7 +2,7 @@
 
 **Codename:** Stateboard  
 **Genre:** Infra map — **scan Terraform repo (HCL)** via **.NET API** → **draw** architecture on RTS hex board → **cost** $/mo by cloud  
-**Status:** MVP in repo (`src/Stateboard.Api` + `apps/web`)  
+**Status:** MVP in repo (`Prove/Stateboard.Api` + `Prove/web`)  
 **Graphics:** Same family as Ascension Live — hex prisms, billboard sprites, Slate Tactical HUD  
 
 See also [architecture.md](architecture.md).

@@ -20,6 +20,8 @@ dist/
 .env
 .env*
 .env.*
+!.env.example
+!**/.env.example
 secrets.json
 **/appsettings.Local.json
 terraform/.terraform/
@@ -28,3 +30,23 @@ terraform/terraform.tfvars
 terraform/*.auto.tfvars
 match-state.json
 **/matches/
+
+# Insights apps — never commit credentials
+**/firebase.json
+**/sa.json
+**/*serviceAccount*.json
+apps/decide/src/config.json
+Narrate/.venv/
+Narrate/venv/
+Decide/src/config.json
+Decide/node_modules/
+Prove/web/node_modules/
+
+# API tokens / local secret files
+Decide/serverless/env.yaml
+**/env.local.yaml
+**/*secrets*.local.*
+Narrate/.env
+Decide/.env
+Decide/.env.local
+

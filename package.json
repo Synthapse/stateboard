@@ -1,15 +1,15 @@
 {
-  "name": "stateboard",
+  "name": "insights",
   "private": true,
   "version": "0.1.0",
-  "description": "Terraform state visualizer — RTS hex graphics + tf-cost calculation module",
+  "description": "Insights monorepo — Decide + Narrate + Prove",
   "workspaces": [
-    "apps/web",
+    "Prove/web",
     "packages/tf-cost"
   ],
   "scripts": {
     "dev": "npm run dev -w @stateboard/web",
-    "dev:api": "dotnet run --project src/Stateboard.Api --urls http://localhost:5281",
+    "dev:api": "dotnet run --project Prove/Stateboard.Api --urls http://localhost:5281",
     "build": "npm run build -w @stateboard/tf-cost && npm run build -w @stateboard/web",
     "test": "npm run test -w @stateboard/tf-cost",
     "test:api": "dotnet test tests/Stateboard.Tests"

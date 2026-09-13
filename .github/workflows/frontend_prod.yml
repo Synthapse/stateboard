@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'apps/web/**'
+      - 'Prove/web/**'
       - 'packages/tf-cost/**'
       - 'package.json'
       - 'package-lock.json'
@@ -50,7 +50,7 @@ jobs:
 
       - name: Upload to GCS
         run: |
-          gsutil -m rsync -r -d apps/web/dist "gs://${FRONTEND_BUCKET}"
+          gsutil -m rsync -r -d Prove/web/dist "gs://${FRONTEND_BUCKET}"
           gsutil -m setmeta -h "Cache-Control:public, max-age=300" "gs://${FRONTEND_BUCKET}/**"
 
       - name: Site URL

@@ -2,8 +2,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY . .
-RUN dotnet restore src/Stateboard.Api/Stateboard.Api.csproj \
-    && dotnet publish src/Stateboard.Api/Stateboard.Api.csproj -c Release -o /app/publish --no-restore
+RUN dotnet restore Prove/Stateboard.Api/Stateboard.Api.csproj \
+    && dotnet publish Prove/Stateboard.Api/Stateboard.Api.csproj -c Release -o /app/publish --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 RUN apt-get update \
