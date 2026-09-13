@@ -10,3 +10,8 @@ frontend_domain      = "stateboard.synthapse.xyz"
 # After apply, CNAME api.stateboard.synthapse.xyz → terraform output api_url in Cloudflare.
 api_domain           = ""
 gemini_secret_id     = "stateboard-gemini-api-key"
+
+# Insights BigQuery (no Ansible — TF owns datasets/tables)
+bq_location = "EU"
+# Optional: pre-create empty GA4 datasets; usually leave [] and link from GA4 Admin
+ga4_dataset_ids = []

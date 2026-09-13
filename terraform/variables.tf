@@ -51,3 +51,15 @@ variable "github_sa_account_id" {
   type        = string
   default     = "stateboard-github-actions"
 }
+
+variable "bq_location" {
+  description = "BigQuery dataset location (use EU or a region consistent with GA4 export)"
+  type        = string
+  default     = "EU"
+}
+
+variable "ga4_dataset_ids" {
+  description = "Optional raw GA4 dataset ids to create empty (usually GA4 linking creates these). Example: [\"analytics_123456\"]"
+  type        = list(string)
+  default     = []
+}

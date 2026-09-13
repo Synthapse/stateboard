@@ -4,29 +4,41 @@ Target for next week: a **working Digest loop** for one product, not a full Deci
 
 ## Architecture (v1)
 
+### Do you need Cloud Run / a standing API?
+
+**MVP Digests: no.** Prefer **Cloud Scheduler → Cloud Function** (or Cloud Run **Job**).  
+Weekly/monthly work is batch: wake up, query BQ, post Slack, exit. No need for an always-on server.
+
+| Surface | Runtime | Why |
+|---------|---------|-----|
+| **Digests (Narrate logic)** | **Cloud Function** (gen2) or Run Job | Scheduled; pay per run; simplest |
+| **Prove** | Keep existing **Cloud Run** API + web | Already live; interactive map/cost |
+| **Decide “Generate now”** | Add HTTP later (Function **or** small Run service) | Only when UI needs on-demand |
+
+**Recommendation:** put Digest code in `Narrate/` as a **library + Function entrypoint** (`main.py` / `digest_handler`). Keep FastAPI optional for local/dev. Promote to a shared HTTP API only if Decide/Prove both call Narrate often.
+
 ```
 Cloud Scheduler (weekly)
         │
         ▼
-   Narrate  POST /v1/insights/digest/run
-        │  product=kih|lindle|yca  cadence=weekly|monthly
+   Cloud Function: digest_run(product, cadence)
         ├─► load InsightsSnapshot (BQ or fixture)
-        ├─► render short Digest text (+ optional LLM “what to watch”)
+        ├─► render Digest (+ optional LLM “what to watch”)
         └─► Slack webhook  (email = phase 1.5)
 
 BigQuery hub: cognispace
   raw_ga4_* · raw_billing · marts_* · (later langfuse / reliability)
 
-Prove  = drill-down UI/API when Digest flags cost/health
-Decide = on-demand / history (after Digest works)
+Prove  = existing Run API (drill-down) — not required for Digest MVP
+Decide = static/Firebase hosting later — not required for Digest MVP
 ```
 
 **One monorepo** (`stateboard` → later `insights`):
 
 | Folder | Deployable | MVP role |
 |--------|------------|----------|
-| `Narrate/` | Cloud Run `narrate` | **MVP hero** — Digest engine |
-| `Prove/` | existing `stateboard-api` + web | Optional link / cost skim later |
+| `Narrate/` | **Cloud Function** `insights-digest` | **MVP hero** |
+| `Prove/` | existing `stateboard-api` + web | Unchanged; optional later |
 | `Decide/` | hosting later | Out of MVP |
 
 Shared contract: **`InsightsSnapshot`** (`schema_version: 1`, `product`, `period`, vital-few metrics).
@@ -38,20 +50,20 @@ You get a **Slack message every week** for **one product** with real-ish numbers
 | # | Slice | Done when |
 |---|--------|-----------|
 | M1 | Snapshot schema + fixture JSON | Pydantic/OpenAPI in Narrate |
-| M2 | `POST /v1/insights/digest/run` | Returns Digest text from fixture |
+| M2 | `digest_run` callable (Function handler or local CLI) | Returns Digest text from fixture |
 | M3 | Slack send | Message in a channel |
 | M4 | BQ Snapshot for **one** product | Fixture replaced for that product |
-| M5 | Cloud Scheduler weekly | Job hits Narrate on cognispace |
+| M5 | Cloud Scheduler → Function weekly | Job fires on cognispace |
 
-**Out of MVP:** Decide UI polish, Prove hex rewrite, email, monthly cadence, all three products, Contentsquare, Langfuse, Grafana.
+**Out of MVP:** Decide UI polish, Prove hex rewrite, email, monthly cadence, all three products, Contentsquare, Langfuse, Grafana, **standing Narrate Cloud Run API**.
 
 ## Suggested build order (next week)
 
-1. **M1–M2** in `Narrate/` (local uvicorn)  
+1. **M1–M2** in `Narrate/` (local: `python -m digest` or tiny FastAPI for debug only)  
 2. **M3** Slack Incoming Webhook (Secret Manager)  
 3. **Warehouse:** GA4 export → `cognispace` for the chosen product (or Billing if GA4 blocked)  
 4. **M4** query → Snapshot  
-5. **M5** deploy Narrate + Scheduler  
+5. **M5** deploy **Function** + Scheduler (not Cloud Run unless you already prefer it)  
 
 Pick **one** product first: recommend `kih` or `lindle` (whichever has cleaner GA4 in BQ already).
 
@@ -70,9 +82,22 @@ Minimum for Digest body:
 - Monorepo: HOLD stateboard; REMOVE Aureyo + Raporting after green  
 - Digests = north star (Slack first)  
 - No fourth repo; no Grafana for v1  
+- **No Ansible** — BigQuery structure lives in `terraform/bigquery.tf`  
+- **Not everything needs Terraform** — Digest = Function + Scheduler (can be `gcloud` deploy); Prove TF stays for existing API/frontend; **BQ datasets/tables = Terraform**
+
+## Infra scope
+
+| Piece | Tool | Notes |
+|-------|------|--------|
+| BQ datasets + `marts_insights.snapshot_daily` | **Terraform** (`terraform/bigquery.tf`) | Source of truth for structure |
+| GA4 / Billing **export linking** | Console (or TF transfer later) | Google-managed table shapes in `raw_*` |
+| Digest Function + Scheduler | `gcloud` or small TF later | Not required day-one in TF |
+| Prove API / frontend bucket | Existing TF | Keep |
+| Ansible | **Do not use** | No servers to configure for Digests/BQ |
 
 ## Open (decide Monday)
 
 - Which product first?  
 - Slack workspace / channel  
-- GA4 property already exporting to `cognispace`? (yes/no)
+- GA4 property already exporting to `cognispace`? (yes/no)  
+- `terraform apply` for BQ datasets (after review `terraform/bigquery.tf`)

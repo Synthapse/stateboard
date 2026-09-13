@@ -40,6 +40,20 @@ output "gemini_secret_id" {
   value = google_secret_manager_secret.gemini_api_key.secret_id
 }
 
+output "bq_datasets" {
+  description = "Insights BigQuery datasets in cognispace"
+  value = {
+    raw_billing       = google_bigquery_dataset.raw_billing.dataset_id
+    raw_langfuse      = google_bigquery_dataset.raw_langfuse.dataset_id
+    marts_growth      = google_bigquery_dataset.marts_growth.dataset_id
+    marts_cost        = google_bigquery_dataset.marts_cost.dataset_id
+    marts_reliability = google_bigquery_dataset.marts_reliability.dataset_id
+    marts_ai          = google_bigquery_dataset.marts_ai.dataset_id
+    marts_insights    = google_bigquery_dataset.marts_insights.dataset_id
+    snapshot_table    = "${google_bigquery_dataset.marts_insights.dataset_id}.${google_bigquery_table.insights_snapshot_daily.table_id}"
+  }
+}
+
 output "cloudflare_dns_hint" {
   value = <<-EOT
     Frontend (${var.frontend_domain}):
