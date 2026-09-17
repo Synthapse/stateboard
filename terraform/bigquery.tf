@@ -1,5 +1,6 @@
 # Insights BigQuery hub (cognispace)
-# Full warehouse from docs/Analytics & Insights Plan.md — raw → staging → core → marts
+# Insights warehouse: raw → staging → core → marts (+ marts_insights Digests)
+# Strategy: docs/strategy-recommendation.md
 # + marts_insights Digest contracts (snapshot_daily, product_strategy).
 # GA4 native export uses analytics_<property_id> (also created via ga4_dataset_ids).
 # Apply: terraform plan/apply from this directory (project_id = cognispace).

@@ -99,7 +99,7 @@ DIGEST_USE_FIXTURE=0 python -c "from insights import daily_pipeline; print(daily
 | marts.ai from Langfuse | Done (promote on ETL) |
 | M5 Function + Scheduler | Deploy script + TF — run deploy + apply |
 
-Design: [docs/implement-digests.md](../docs/implement-digests.md) · Architecture: [docs/insights-architecture.md](../docs/insights-architecture.md)
+Docs: [strategy](../docs/strategy-recommendation.md) · [architecture](../docs/insights-architecture.md) · [setup](../docs/ui-setup-load-paths.md)
 
 ## Secrets
 

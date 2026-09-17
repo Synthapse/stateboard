@@ -29,4 +29,4 @@ cd Prove/web && npm run dev
 
 ## Deploy
 
-Cloud Run `stateboard-api` + GCS frontend — see `docs/deploy-gcp.md` at repo root.
+Cloud Run `stateboard-api` + GCS frontend (GitHub Actions). See workflows under `.github/workflows/`.

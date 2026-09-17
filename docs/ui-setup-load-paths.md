@@ -1,10 +1,10 @@
 # UI setup — all load paths (cognispace hub)
 
 One-time setup in **GA4 / GCP Billing / Langfuse / Contentsquare / Clarity** UIs  
-so Narrate `build_snapshots` can fill `marts_insights.snapshot_daily`.
+so Narrate can fill `marts_insights.snapshot_daily`.
 
-IDs from [Analytics & Insights Plan.md](./Analytics%20%26%20Insights%20Plan.md).  
-Code: `Narrate/insights/integrations/` · overview: [bigquery-load-paths.md](./bigquery-load-paths.md).
+Strategy: [strategy-recommendation.md](./strategy-recommendation.md) · Architecture: [insights-architecture.md](./insights-architecture.md).  
+Code: `Narrate/insights/integrations/`.
 
 **Hub:** `cognispace` · **BQ location:** `EU`
 
@@ -16,8 +16,7 @@ Code: `Narrate/insights/integrations/` · overview: [bigquery-load-paths.md](./b
 cd terraform && terraform apply
 ```
 
-Creates the **full** warehouse (Analytics plan): `raw_*`, `staging.*`, `core.*`, `marts.*`, plus `marts_insights.*`.  
-See [bigquery-terraform.md](./bigquery-terraform.md).
+Creates `raw_*`, `staging.*`, `core.*`, `marts.*`, `marts_insights.*` (see `terraform/bigquery.tf`).
 
 ---
 
@@ -39,23 +38,21 @@ See [bigquery-terraform.md](./bigquery-terraform.md).
 
 | Product | Billing account | Cost project | Export destination |
 |---------|-----------------|--------------|--------------------|
-| KIH | `01BF64-6A600F-517AFE` | `dr-kiwi-app` | **Stage `dr-kiwi-app.raw_billing` → daily copy → `cognispace.raw_billing`** ([kih-billing-bridge.md](./kih-billing-bridge.md)) |
-| Lindle | `01C7B7-5B77CD-27EDAD` | `cognispace` | **`cognispace.raw_billing`** (direct) |
-| YCA | `01F545-2E8963-C6EBE1` | `adroit-router-462912-n6` | **Stage `adroit-router-462912-n6.raw_billing` → daily copy → `cognispace.raw_billing`** ([yca-billing-bridge.md](./yca-billing-bridge.md)) |
+| KIH | `01BF64-6A600F-517AFE` | `dr-kiwi-app` | Stage `dr-kiwi-app.raw_billing` → daily TF copy → `cognispace.raw_billing` |
+| Lindle | `01C7B7-5B77CD-27EDAD` | `cognispace` | **Direct** → `cognispace.raw_billing` |
+| YCA | `01F545-2E8963-C6EBE1` | `adroit-router-462912-n6` | Stage `adroit-router-….raw_billing` → daily TF copy → hub |
 
 ### Lindle (direct — Cognispace is on Lindle billing)
 
 1. Console → **Billing** → Lindle account → **Billing export** → **BigQuery export**  
 2. **Detailed usage cost** ON → project **`cognispace`** → dataset **`raw_billing`**  
 
-### YCA / KIH (bridge — separate billing from Cognispace)
+### YCA / KIH (bridge — Cognispace is on Lindle billing)
 
-1. Follow **[yca-billing-bridge.md](./yca-billing-bridge.md)** or **[kih-billing-bridge.md](./kih-billing-bridge.md)**  
-2. Detailed export → product’s own GCP project → `raw_billing`  
-3. Daily scheduled query copies into Cognispace (Terraform)  
-4. Hub tables:  
-   - YCA `…_01F545_2E8963_C6EBE1`  
-   - KIH `…_01BF64_6A600F_517AFE`  
+1. Detailed export → **product’s own GCP project** → dataset `raw_billing` (EU)  
+2. Terraform sync (`kih_billing_sync.tf` / `yca_billing_sync.tf`) copies into `cognispace.raw_billing` daily  
+3. Hub tables: YCA `…_01F545_…` · KIH `…_01BF64_…` (KIH still needs Console export first)
+
 ---
 
 ## 3. Langfuse → Digests / `raw_langfuse` (required lens)

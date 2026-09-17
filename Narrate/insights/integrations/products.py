@@ -1,4 +1,4 @@
-"""Product registry — IDs from docs/Analytics & Insights Plan.md (2026-09-13)."""
+"""Product registry — GA4 / billing / Langfuse IDs (see docs/ui-setup-load-paths.md)."""
 
 from __future__ import annotations
 

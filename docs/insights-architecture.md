@@ -3,7 +3,7 @@
 Hub: **`cognispace`** (BigQuery `EU`). Products: **`kih`** | **`lindle`** | **`yca`**.  
 Delivery: **email Digests** (Slack later). No product UI — Decide/Aureyo removed.
 
-Related: [mvp-architecture.md](./mvp-architecture.md) · [implement-digests.md](./implement-digests.md) · [bigquery-load-paths.md](./bigquery-load-paths.md) · [ui-setup-load-paths.md](./ui-setup-load-paths.md) · [implement-core-warehouse.md](./implement-core-warehouse.md) · [plan-data-utilization.md](./plan-data-utilization.md)
+Related: [strategy-recommendation.md](./strategy-recommendation.md) · [ui-setup-load-paths.md](./ui-setup-load-paths.md)
 
 ---
 
@@ -193,7 +193,7 @@ Dependency rule: `entrypoints` → `application` → `domain` ← `infrastructur
 2. App → `fct_orders` / subscriptions when ready for conversion Digests.  
 3. Slack as primary channel; monthly cadence job.  
 4. Optional dbt/Dataform instead of Python MERGE sprawl.  
-5. Align older Analytics plan / Decide mentions with email-first reality.
+5. Prefer marts-only paths once loaders are fully trusted.
 
 ---
 
