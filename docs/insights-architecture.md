@@ -29,7 +29,7 @@ SOURCES → raw / landing → core dims+facts → marts KPIs
 
 | Stage | What | Examples |
 |-------|------|----------|
-| **Sources** | Product / cloud / AI / UX / app | GA4 Link, Billing export, Langfuse API, Clarity/Contentsquare, App DBs, HTTP health |
+| **Sources** | Product / cloud / AI / UX / app | GA4 Link, Billing export, Langfuse API, Clarity, App DBs, HTTP health |
 | **Raw / landing** | Native or ETL landings | `analytics_<property_id>.*`, `raw_billing.*`, `raw_langfuse.daily_metrics`, `raw_clarity.daily_insights`, `raw_app.entities`, `raw_health.*` |
 | **Core** | Dims + facts | `fct_sessions`, `fct_events`, `fct_gcp_cost`, `fct_llm_traces`, `fct_healthchecks`, `dim_product` / `dim_feature` / `dim_service` / `dim_user` / `dim_account` |
 | **Marts** | Product KPI JSON blobs | `marts.growth`, `product`, `customer`, `ai`, `cost`, `reliability`, `executive` |
@@ -44,7 +44,7 @@ SOURCES → raw / landing → core dims+facts → marts KPIs
 | Cloud $ | Billing export → `raw_billing` → `billing_core` → `fct_gcp_cost` + `marts.cost` | `integrations/bigquery/billing_core.py` |
 | AI $ / traces | Langfuse API → `raw_langfuse` → `marts.ai` (+ `langfuse_core`) | `integrations/langfuse/` |
 | Reliability | Health probes + Error Reporting → `marts.reliability` | `integrations/bigquery/healthchecks.py` |
-| UX flags | Clarity ETL / Contentsquare signal → snapshot flags | `integrations/clarity/`, `contentsquare/` |
+| UX flags | Clarity ETL → snapshot flags | `integrations/clarity/` |
 | App inventory | Postgres / Neo4j → `raw_app` + `dim_user` / `dim_account` | `integrations/app/` |
 | Portfolio narrative | Facts pack → Gemini → `marts.executive` | `application/executive_layer.py` |
 
@@ -153,11 +153,10 @@ Dependency rule: `entrypoints` → `application` → `domain` ← `infrastructur
 
 | Item | Gap |
 |------|-----|
-| M5 Scheduler | Daily + weekly jobs ENABLED |
+| M5 Scheduler | Daily + weekly ENABLED — move to 16:00 / Mon 17:00 Warsaw (TF updated; apply still needed) so GA4 `events_*` has landed |
 | Billing Lindle / YCA | In `cognispace.raw_billing` |
 | Billing KIH | Need Console Detailed export → `dr-kiwi-app.raw_billing` (sync already scheduled) |
 | GA4 `events_*` | Present for all three (as of 2026-09-16) |
-| Contentsquare | API key for real friction (else `no_api_key` flag) |
 | Clarity | ETL in `daily_pipeline` (needs product API keys) |
 | App dims | Need `*_DATABASE_URL` / Neo4j secrets on Function |
 | Langfuse pricing | Traces can exist while AI $ stays `$0` |
@@ -167,7 +166,6 @@ Dependency rule: `entrypoints` → `application` → `domain` ← `infrastructur
 
 - `marts.marketing`, `marts.revenue`  
 - `core.fct_orders`, `fct_subscriptions`, most unused `staging.*`  
-- `raw_contentsquare` (no full warehouse ETL yet)  
 
 ---
 
@@ -183,9 +181,8 @@ Dependency rule: `entrypoints` → `application` → `domain` ← `infrastructur
 ### P1 — data quality & ops
 
 1. Enable Langfuse model pricing (or keep surfacing AI cost gap in Digests).  
-2. Contentsquare API key — or stop emitting the flag.  
-3. Observability: per-step status; watch Scheduler `attempt_deadline` (480s) vs full pipeline runtime.  
-4. Prefer trusted marts in `snapshot_builder` once `ga4_core` is solid (reduce dual SQL paths).
+2. Observability: per-step status; watch Scheduler `attempt_deadline` (480s) vs full pipeline runtime.  
+3. Prefer trusted marts in `snapshot_builder` once `ga4_core` is solid (reduce dual SQL paths).
 
 ### P2 — warehouse depth
 

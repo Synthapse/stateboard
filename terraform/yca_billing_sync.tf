@@ -40,7 +40,11 @@ locals {
       WHERE table_name = '${local.yca_billing_table}'
     ) > 0
     THEN
-      CREATE OR REPLACE TABLE
+      -- DROP + COPY: REPLACE…COPY can miss new ingestion-time partitions;
+      -- AS SELECT cannot replace a day-partitioned billing export table.
+      DROP TABLE IF EXISTS
+        `${var.project_id}.raw_billing.${local.yca_billing_table}`;
+      CREATE TABLE
         `${var.project_id}.raw_billing.${local.yca_billing_table}`
       COPY
         `${var.yca_billing_stage_project}.${var.yca_billing_stage_dataset}.${local.yca_billing_table}`;

@@ -140,7 +140,7 @@ def seed_core_dims() -> dict[str, Any]:
                     "ga4_dataset": src.ga4_dataset,
                     "gcp_project_id": src.gcp_project_id,
                     "billing_account_id": src.billing_account_id,
-                    "ux_primary": src.ux_primary,
+                    "clarity_project_id": src.clarity_project_id,
                 },
             }
             for src in PRODUCT_SOURCES.values()

@@ -40,7 +40,11 @@ locals {
       WHERE table_name = '${local.kih_billing_table}'
     ) > 0
     THEN
-      CREATE OR REPLACE TABLE
+      -- DROP + COPY: REPLACE…COPY can miss new ingestion-time partitions;
+      -- AS SELECT cannot replace a day-partitioned billing export table.
+      DROP TABLE IF EXISTS
+        `${var.project_id}.raw_billing.${local.kih_billing_table}`;
+      CREATE TABLE
         `${var.project_id}.raw_billing.${local.kih_billing_table}`
       COPY
         `${var.kih_billing_stage_project}.${var.kih_billing_stage_dataset}.${local.kih_billing_table}`;

@@ -16,8 +16,7 @@ locals {
   raw_datasets = {
     raw_billing       = "GCP Billing Detailed usage cost export"
     raw_langfuse      = "Langfuse API / ETL landing"
-    raw_clarity       = "Clarity API aggregates / legacy project links"
-    raw_contentsquare = "Contentsquare API aggregates (UX SoT)"
+    raw_clarity       = "Clarity API aggregates / project links"
     raw_app           = "App DB / events landing (users, orgs, orders…)"
     raw_gcp           = "Monitoring / Logging / uptime / Error Reporting exports"
     raw_health        = "Curated healthcheck + exception events"
@@ -36,7 +35,6 @@ locals {
     "stg_accounts",
     "stg_orders",
     "stg_clarity",
-    "stg_contentsquare",
   ])
 
   # Core dims vs facts (different schemas)
@@ -80,7 +78,7 @@ locals {
   # Layer-specific schemas (not identical placeholders)
   # staging = cleaned source rows
   staging_schema = jsonencode([
-    { name = "source_system", type = "STRING", mode = "REQUIRED", description = "ga4 | billing | langfuse | clarity | contentsquare | app | gcp | health" },
+    { name = "source_system", type = "STRING", mode = "REQUIRED", description = "ga4 | billing | langfuse | clarity | app | gcp | health" },
     { name = "source_table", type = "STRING", mode = "NULLABLE", description = "Upstream table / export name" },
     { name = "ingest_date", type = "DATE", mode = "REQUIRED", description = "Partition = ingest day" },
     { name = "product", type = "STRING", mode = "NULLABLE", description = "kih | lindle | yca when known" },

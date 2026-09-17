@@ -1,6 +1,6 @@
 # UI setup — all load paths (cognispace hub)
 
-One-time setup in **GA4 / GCP Billing / Langfuse / Contentsquare / Clarity** UIs  
+One-time setup in **GA4 / GCP Billing / Langfuse / Clarity** UIs  
 so Narrate can fill `marts_insights.snapshot_daily`.
 
 Strategy: [strategy-recommendation.md](./strategy-recommendation.md) · Architecture: [insights-architecture.md](./insights-architecture.md).  
@@ -109,38 +109,9 @@ HTTP (Cloud Function): `?action=langfuse_etl` (all) or `?action=langfuse_etl&pro
 
 ---
 
-## 4. Contentsquare → Digests (UX SoT)
+## 4. Clarity → Digests (UX signal + export API)
 
-Contentsquare is the **UX system of truth** (Clarity is legacy). Digests register the project and optionally call the API for a friction skim — not a full session warehouse.
-
-| Product | Contentsquare project id |
-|---------|--------------------------|
-| KIH | `57dec74d2513b` |
-| Lindle | set in CS Console / `CONTENTSQUARE_LINDLE_PROJECT_ID` |
-| YCA | set in CS Console / `CONTENTSQUARE_YCA_PROJECT_ID` |
-
-### UI steps
-
-1. Log in to **Contentsquare** Console for each product  
-2. Confirm / copy **Project ID** (KIH already in registry)  
-3. **Settings → API / Integrations** → create API credential (if your plan includes API)  
-4. Env:
-
-```bash
-CONTENTSQUARE_API_KEY=...
-# optional overrides:
-CONTENTSQUARE_KIH_PROJECT_ID=57dec74d2513b
-CONTENTSQUARE_LINDLE_PROJECT_ID=...
-CONTENTSQUARE_YCA_PROJECT_ID=...
-```
-
-Without an API key, Digests still record `contentsquare:missing_id|no_api_key` in Snapshot flags so the gap is visible.
-
----
-
-## 5. Clarity → Digests (legacy IDs + export API)
-
-Keep Clarity project IDs for continuity; do **not** treat Clarity as UX SoT.
+Optional UX flags on Snapshots. Lindle/YCA have project ids; KIH none unless you add one.
 
 | Product | Clarity project id |
 |---------|-------------------|
@@ -175,12 +146,12 @@ Clarity API limits: **max 3 days history**, **~10 requests/project/day** — run
 
 ---
 
-## 6. Run Snapshot build
+## 5. Run Snapshot build
 
 ```bash
 cd Narrate
 export DIGEST_USE_FIXTURE=0 BQ_PROJECT=cognispace BQ_LOCATION=EU
-# + LANGFUSE_* / CONTENTSQUARE_* / CLARITY_* as above
+# + LANGFUSE_* / CLARITY_* as above
 
 python -c "from insights import build_snapshots, Product; print(build_snapshots(Product.KIH))"
 python -c "from insights import digest_run, Product; print(digest_run(Product.KIH)['text'])"
@@ -195,13 +166,12 @@ python -c "from insights import digest_run, Product; print(digest_run(Product.KI
 | GA4 | BigQuery Link | Daily `events_*` |
 | Billing | Detailed export | Continuous rows |
 | Langfuse | API keys in `.env` | `build_snapshots` ETL each run |
-| Contentsquare | Project id + API key | Signal on each Snapshot build |
 | Clarity | Project id + token | Signal on each Snapshot build |
 | Snapshot + Digest | Scheduler (M5) | Cadence automation |
 
 ---
 
-## 7. Digest email audiences (required)
+## 6. Digest email audiences (required)
 
 Each product has its **own** recipient list. Set in `Narrate/.env` (never commit):
 
@@ -228,11 +198,10 @@ Update audiences whenever stakeholders change — no code change needed.
 - [ ] GA4 links ×3 → cognispace / EU  
 - [ ] Billing Detailed export ×3 → `raw_billing`  
 - [ ] Langfuse API keys + daily `langfuse_etl` → `raw_langfuse.daily_metrics`  
-- [ ] Contentsquare project ids (+ API key)  
 - [ ] Clarity tokens for Lindle + YCA  
 - [x] SMTP (Gmail App Password) + test Digest email → `piotrzak77@gmail.com`  
 - [x] **Set per-product audiences** (`DIGEST_EMAIL_TO_KIH` / `_LINDLE` / `_YCA`)  
-- [ ] `build_snapshots` → row with GA4/Billing/Langfuse/UX flags  
+- [ ] `build_snapshots` → row with GA4/Billing/Langfuse/Clarity flags  
 - [ ] `digest_run` shows BigQuery details + AI $
 
 ### Status snapshot (2026-09-16)

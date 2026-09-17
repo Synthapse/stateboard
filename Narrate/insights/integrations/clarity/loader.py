@@ -49,7 +49,7 @@ def clarity_token(product: Product) -> str:
 
 class ClarityLoader:
     """
-    Clarity UX for Lindle/YCA (KIH uses Contentsquare).
+    Clarity UX signal for Digests (Lindle/YCA have project ids; KIH optional).
     UI: Clarity → Settings → Data Export → Generate API token.
     """
 

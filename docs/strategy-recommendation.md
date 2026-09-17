@@ -48,7 +48,7 @@ Details: [insights-architecture.md](./insights-architecture.md) · Setup: [ui-se
 ## Roadmap
 
 **P0:** KIH billing export · YCA billing freshness · Monday audience check  
-**P1:** Looker board · Langfuse pricing · Contentsquare key or drop flag · alert tuning  
+**P1:** Looker board · Langfuse pricing · alert tuning  
 **P2:** revenue/orders later · Slack · monthly cadence · dbt only if needed  
 
 **Non-goals (90 days):** Decide UI · full Clarity marts · mobile portal · email→custom web app  

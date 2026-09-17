@@ -49,7 +49,7 @@ def _prefer_ai_cost(*candidates: float | None) -> float | None:
 
 class BigQuerySnapshotBuilder:
     """
-    Load path: GA4 + Billing + Langfuse + Contentsquare + Clarity
+    Load path: GA4 + Billing + Langfuse + Clarity
     → InsightsSnapshot → snapshot_daily.
     See docs/ui-setup-load-paths.md for Console / API key setup.
     """
@@ -80,11 +80,9 @@ class BigQuerySnapshotBuilder:
             cloud_cost, cloud_prior = self._cloud_from_marts(sources.product.value)
 
         from insights.integrations.clarity.loader import ClarityLoader
-        from insights.integrations.contentsquare.loader import ContentsquareLoader
         from insights.integrations.langfuse.metrics_loader import LangfuseMetricsLoader
 
         lf = LangfuseMetricsLoader().load(sources.product, lookback_days=self.lookback_days)
-        cs = ContentsquareLoader().load(sources.product)
         clarity = ClarityLoader().load(sources.product)
 
         warehouse_ai = self._ai_from_warehouse(sources.product.value)
@@ -96,10 +94,6 @@ class BigQuerySnapshotBuilder:
             flags.append(f"ga4:no_events:{sources.ga4_dataset}")
         if lf.trace_count is not None:
             flags.append(f"langfuse:traces={lf.trace_count}")
-        if cs.status not in ("ok", "skipped") and cs.status:
-            flags.append(f"contentsquare:{cs.status}")
-        elif cs.status == "ok" and cs.project_id:
-            flags.append(f"contentsquare:ok:{cs.project_id}")
         if clarity.project_id and clarity.status != "none":
             flags.append(f"clarity:{clarity.status}:{clarity.project_id}")
 
@@ -108,8 +102,6 @@ class BigQuerySnapshotBuilder:
         reliability_flags = self._merge_reliability_flags(flags, rel["flags"])
         if sessions is None and users is None:
             watch.append(f"GA4 events_* not ready in {sources.ga4_dataset} — wait for daily export")
-        if cs.note and cs.status not in ("ok", "skipped"):
-            watch.append(cs.note)
         if clarity.note and clarity.status in ("no_token", "error"):
             watch.append(clarity.note)
         if (lf.trace_count or 0) > 0 and (lf.total_cost_usd or 0) == 0 and (ai_cost or 0) == 0:

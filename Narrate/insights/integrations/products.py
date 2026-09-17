@@ -26,9 +26,7 @@ class ProductSources:
     langfuse_project_name: str | None
     langfuse_project_id: str | None
     langfuse_org: str | None
-    # UX — Contentsquare (KIH) or Clarity (Lindle/YCA). Only one primary per product.
-    ux_primary: str  # "contentsquare" | "clarity"
-    contentsquare_id: str | None
+    # UX — Microsoft Clarity (optional per product)
     clarity_project_id: str | None
     hotjar_id: str | None = None
 
@@ -50,8 +48,6 @@ PRODUCT_SOURCES: dict[Product, ProductSources] = {
         langfuse_project_name="DrKiwi",
         langfuse_project_id="cmph5si3406aoad0e8o2j8p4d",
         langfuse_org="Keep It Healthy (cmph5sdsp06ajad0e9vldfnn7)",
-        ux_primary="contentsquare",
-        contentsquare_id="57dec74d2513b",
         clarity_project_id=None,
     ),
     Product.LINDLE: ProductSources(
@@ -66,8 +62,6 @@ PRODUCT_SOURCES: dict[Product, ProductSources] = {
         langfuse_project_name="Lindle",
         langfuse_project_id="cmei38jmn00s1ad07oqzvyqcz",
         langfuse_org="Synthapse (cmehh1da7003nad07axuh0p6a)",
-        ux_primary="clarity",
-        contentsquare_id=None,
         clarity_project_id="tfa09ihgyu",
     ),
     Product.YCA: ProductSources(
@@ -82,8 +76,6 @@ PRODUCT_SOURCES: dict[Product, ProductSources] = {
         langfuse_project_name="yca-ca-mvp",
         langfuse_project_id=None,  # name known; set id in env if needed
         langfuse_org=None,
-        ux_primary="clarity",
-        contentsquare_id=None,
         clarity_project_id="t9jhgsv5zv",
         hotjar_id="6502269",
     ),

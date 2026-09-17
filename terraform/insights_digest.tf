@@ -19,12 +19,13 @@ resource "google_cloud_run_service_iam_member" "insights_digest_invoker" {
   member   = "serviceAccount:${google_service_account.insights_digest_scheduler[0].email}"
 }
 
-# Daily 06:00 Europe/Warsaw — Langfuse → marts.ai + build_snapshots
+# Daily 16:00 Europe/Warsaw — after GA4 BigQuery export usually lands
+# (events_YYYYMMDD often appears mid-day UTC; 06:00 Warsaw was too early).
 resource "google_cloud_scheduler_job" "insights_daily" {
   count            = var.digest_function_url != "" ? 1 : 0
   name             = "insights-daily-pipeline"
   description      = "Langfuse + Clarity + marts + Snapshot build (daily_pipeline)"
-  schedule         = "0 6 * * *"
+  schedule         = "0 16 * * *"
   time_zone        = "Europe/Warsaw"
   attempt_deadline = "480s"
   region           = var.region
@@ -43,12 +44,12 @@ resource "google_cloud_scheduler_job" "insights_daily" {
   depends_on = [google_cloud_run_service_iam_member.insights_digest_invoker]
 }
 
-# Weekly Monday 07:00 — Digests for all products
+# Weekly Monday 17:00 — after daily pipeline refreshes snapshots
 resource "google_cloud_scheduler_job" "insights_weekly" {
   count            = var.digest_function_url != "" ? 1 : 0
   name             = "insights-weekly-digest"
   description      = "Weekly Digests for kih, lindle, yca"
-  schedule         = "0 7 * * 1"
+  schedule         = "0 17 * * 1"
   time_zone        = "Europe/Warsaw"
   attempt_deadline = "480s"
   region           = var.region
