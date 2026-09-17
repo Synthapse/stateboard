@@ -1,3 +1,14 @@
 *.pyc
 *.iml
 *.xml
+
+# Secrets — see also repo-root .gitignore
+.env
+.env.*
+!.env.example
+firebase.json
+sa.json
+*serviceAccount*.json
+credentials.json
+*.pem
+*.key

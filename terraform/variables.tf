@@ -63,3 +63,15 @@ variable "ga4_dataset_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "digest_function_url" {
+  description = "HTTP URL of insights-digest Cloud Function (empty = skip Scheduler). Set after deploy_digest_fn.sh"
+  type        = string
+  default     = ""
+}
+
+variable "digest_function_name" {
+  description = "Cloud Run service name behind gen2 Function (usually same as function name)"
+  type        = string
+  default     = "insights-digest"
+}

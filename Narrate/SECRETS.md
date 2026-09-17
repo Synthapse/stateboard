@@ -1,12 +1,12 @@
 # Narrate secrets
 
-Never commit Firebase / GCP / Notion / xAI keys into this monorepo.
+Never commit Firebase / GCP / Notion / xAI / SMTP / Langfuse keys into this monorepo.
 
-Use:
+Use (gitignored):
 
-- `Narrate/.env` (gitignored) — `GEMINI_API_KEY`, `XAI_API_KEY`
-- `Decide/.env` (gitignored) — `REACT_APP_NOTION_TOKEN`, `REACT_APP_NOTION_DB_ID`
-- `Decide/serverless/env.yaml` (gitignored) — copy from `env.yaml.example`
+- `Narrate/.env` — `GEMINI_*`, `SMTP_*`, `DIGEST_*`, `BQ_*`, `LANGFUSE_*`, `CONTENTSQUARE_*`, `CLARITY_*`, DB URLs
 
-See also `*.env.example` files for variable names.
+Templates (safe to commit): `Narrate/.env.example`
+
+Also ignored at repo root: `firebase.json`, SA JSON, `*.pem` / `*.key`, `terraform/terraform.tfvars`.
 

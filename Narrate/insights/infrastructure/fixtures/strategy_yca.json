@@ -1,0 +1,251 @@
+{
+  "title": "YCA Go-to-Market Hold",
+  "executive_summary": "Seed strategy for YCA — Digests refresh this hold each weekly cadence.",
+  "market_analysis": {
+    "title": "Market analysis",
+    "content": "Growth-stage product; campaign vs organic mix matters.",
+    "subsections": [
+      {
+        "title": "Market size & growth",
+        "content": "Growth-stage product; campaign vs organic mix matters.",
+        "subsections": null
+      },
+      {
+        "title": "Trends",
+        "content": "See parent: Market analysis. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Competitive landscape",
+        "content": "See parent: Market analysis. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Barriers & opportunities",
+        "content": "See parent: Market analysis. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "target_segments": {
+    "title": "Target segments",
+    "content": "Early adopters and CRM-integrated workflows.",
+    "subsections": [
+      {
+        "title": "Primary segments",
+        "content": "Early adopters and CRM-integrated workflows.",
+        "subsections": null
+      },
+      {
+        "title": "Needs & jobs-to-be-done",
+        "content": "See parent: Target segments. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Prioritization",
+        "content": "See parent: Target segments. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "positioning_strategy": {
+    "title": "Positioning",
+    "content": "Reliable sync + clear weekly signal.",
+    "subsections": [
+      {
+        "title": "Positioning statement",
+        "content": "Reliable sync + clear weekly signal.",
+        "subsections": null
+      },
+      {
+        "title": "Differentiation",
+        "content": "See parent: Positioning. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Messaging pillars",
+        "content": "See parent: Positioning. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "product_strategy": {
+    "title": "Product strategy",
+    "content": "Protect CRM sync SLA while sessions grow.",
+    "subsections": [
+      {
+        "title": "Near-term bets",
+        "content": "Protect CRM sync SLA while sessions grow.",
+        "subsections": null
+      },
+      {
+        "title": "Roadmap themes",
+        "content": "See parent: Product strategy. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Success metrics",
+        "content": "See parent: Product strategy. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "pricing_strategy": {
+    "title": "Pricing",
+    "content": "Keep AI spend small vs cloud as traffic scales.",
+    "subsections": [
+      {
+        "title": "Packaging",
+        "content": "Keep AI spend small vs cloud as traffic scales.",
+        "subsections": null
+      },
+      {
+        "title": "Unit economics signals",
+        "content": "See parent: Pricing. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Experiments",
+        "content": "See parent: Pricing. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "distribution_strategy": {
+    "title": "Distribution",
+    "content": "Inbox Digests; Prove for drill-down later.",
+    "subsections": [
+      {
+        "title": "Primary channels",
+        "content": "Inbox Digests; Prove for drill-down later.",
+        "subsections": null
+      },
+      {
+        "title": "Partners",
+        "content": "See parent: Distribution. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Inbox / digest motion",
+        "content": "See parent: Distribution. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "marketing_plan": {
+    "title": "Marketing plan",
+    "content": "Attribute session spikes to campaign vs organic.",
+    "subsections": [
+      {
+        "title": "This cadence themes",
+        "content": "Attribute session spikes to campaign vs organic.",
+        "subsections": null
+      },
+      {
+        "title": "Channels",
+        "content": "See parent: Marketing plan. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Measurement",
+        "content": "See parent: Marketing plan. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "sales_strategy": {
+    "title": "Sales strategy",
+    "content": "n/a for MVP Digests.",
+    "subsections": [
+      {
+        "title": "Motion",
+        "content": "n/a for MVP Digests.",
+        "subsections": null
+      },
+      {
+        "title": "Pipeline focus",
+        "content": "See parent: Sales strategy. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "customer_success": {
+    "title": "Customer success",
+    "content": "CRM sync latency is the primary reliability theme.",
+    "subsections": [
+      {
+        "title": "Health signals",
+        "content": "CRM sync latency is the primary reliability theme.",
+        "subsections": null
+      },
+      {
+        "title": "Interventions",
+        "content": "See parent: Customer success. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "timeline_milestones": {
+    "title": "Timeline",
+    "content": "Clear SLOW job before next monthly cadence.",
+    "subsections": [
+      {
+        "title": "This cadence",
+        "content": "Clear SLOW job before next monthly cadence.",
+        "subsections": null
+      },
+      {
+        "title": "Next 30–90 days",
+        "content": "See parent: Timeline. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "budget_forecast": {
+    "title": "Budget forecast",
+    "content": "Seed — refreshed from Snapshot each run.",
+    "subsections": [
+      {
+        "title": "Cloud & AI spend",
+        "content": "Seed — refreshed from Snapshot each run.",
+        "subsections": null
+      },
+      {
+        "title": "Watch thresholds",
+        "content": "See parent: Budget forecast. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "risk_mitigation": {
+    "title": "Risk mitigation",
+    "content": "yca-sync-crm latency and backlog risk.",
+    "subsections": [
+      {
+        "title": "Active flags",
+        "content": "yca-sync-crm latency and backlog risk.",
+        "subsections": null
+      },
+      {
+        "title": "Mitigations",
+        "content": "See parent: Risk mitigation. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Owners / next check",
+        "content": "See parent: Risk mitigation. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "schema_version": 1,
+  "product": "yca",
+  "cadence": "weekly",
+  "period_date": "2026-09-01",
+  "product_description": "YCA / CzatBudowlany — construction chat and tools.",
+  "target_market": "Early adopters and CRM-integrated construction workflows.",
+  "budget_range": null,
+  "timeline_constraints": null,
+  "updated_at": null,
+  "refreshed_by": "seed"
+}

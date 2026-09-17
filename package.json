@@ -2,7 +2,7 @@
   "name": "insights",
   "private": true,
   "version": "0.1.0",
-  "description": "Insights monorepo — Decide + Narrate + Prove",
+  "description": "Insights monorepo — Narrate + Prove",
   "workspaces": [
     "Prove/web",
     "packages/tf-cost"

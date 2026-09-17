@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "product": "kih",
+  "period_date": "2026-09-08",
+  "period_start": "2026-09-01T00:00:00Z",
+  "period_end": "2026-09-08T00:00:00Z",
+  "sessions": 12480,
+  "sessions_delta_pct": 8.4,
+  "users": 3920,
+  "cloud_cost_usd": 412.50,
+  "cloud_cost_delta_pct": -3.2,
+  "ai_cost_usd": 87.10,
+  "reliability_flags": [
+    "job:cds-purge-events:FAILED"
+  ],
+  "watch_bullets": [
+    "Sessions up 8% WoW — check if paid acquisition drove it",
+    "cds-purge-events failed twice; backlog may grow",
+    "Cloud $ slightly down; AI spend is ~21% of cloud"
+  ]
+}

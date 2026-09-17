@@ -40,17 +40,31 @@ output "gemini_secret_id" {
   value = google_secret_manager_secret.gemini_api_key.secret_id
 }
 
+output "digest_scheduler" {
+  description = "M5 Scheduler jobs (empty until digest_function_url is set)"
+  value = var.digest_function_url == "" ? null : {
+    daily  = try(google_cloud_scheduler_job.insights_daily[0].name, null)
+    weekly = try(google_cloud_scheduler_job.insights_weekly[0].name, null)
+    url    = var.digest_function_url
+  }
+}
+
 output "bq_datasets" {
-  description = "Insights BigQuery datasets in cognispace"
+  description = "Insights BigQuery warehouse in cognispace (Analytics & Insights Plan + Digests)"
   value = {
-    raw_billing       = google_bigquery_dataset.raw_billing.dataset_id
-    raw_langfuse      = google_bigquery_dataset.raw_langfuse.dataset_id
-    marts_growth      = google_bigquery_dataset.marts_growth.dataset_id
-    marts_cost        = google_bigquery_dataset.marts_cost.dataset_id
-    marts_reliability = google_bigquery_dataset.marts_reliability.dataset_id
-    marts_ai          = google_bigquery_dataset.marts_ai.dataset_id
-    marts_insights    = google_bigquery_dataset.marts_insights.dataset_id
-    snapshot_table    = "${google_bigquery_dataset.marts_insights.dataset_id}.${google_bigquery_table.insights_snapshot_daily.table_id}"
+    raw = {
+      for k, d in google_bigquery_dataset.raw : k => d.dataset_id
+    }
+    ga4_analytics  = [for d in google_bigquery_dataset.raw_ga4 : d.dataset_id]
+    staging        = google_bigquery_dataset.staging.dataset_id
+    core           = google_bigquery_dataset.core.dataset_id
+    marts          = google_bigquery_dataset.marts.dataset_id
+    marts_insights = google_bigquery_dataset.marts_insights.dataset_id
+    snapshot_table = "${google_bigquery_dataset.marts_insights.dataset_id}.${google_bigquery_table.insights_snapshot_daily.table_id}"
+    strategy_table = "${google_bigquery_dataset.marts_insights.dataset_id}.${google_bigquery_table.insights_product_strategy.table_id}"
+    staging_tables = sort([for t in google_bigquery_table.staging : t.table_id])
+    core_tables    = sort(concat([for t in google_bigquery_table.core_dim : t.table_id], [for t in google_bigquery_table.core_fct : t.table_id]))
+    marts_tables   = sort([for t in google_bigquery_table.marts : t.table_id])
   }
 }
 

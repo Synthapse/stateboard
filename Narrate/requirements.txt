@@ -1,6 +1,7 @@
 markdown
 fastapi
 google-cloud-storage
+google-cloud-bigquery
 google-generativeai
 markdown2
 jinja2
@@ -9,3 +10,9 @@ uvicorn
 openai
 firebase-admin
 python-dotenv
+pydantic>=2
+requests
+functions-framework
+sqlalchemy>=2
+psycopg2-binary
+neo4j

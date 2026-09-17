@@ -13,5 +13,14 @@ gemini_secret_id     = "stateboard-gemini-api-key"
 
 # Insights BigQuery (no Ansible — TF owns datasets/tables)
 bq_location = "EU"
-# Optional: pre-create empty GA4 datasets; usually leave [] and link from GA4 Admin
-ga4_dataset_ids = []
+# GA4 datasets after BigQuery Links (Analytics & Insights Plan property IDs)
+ga4_dataset_ids = [
+  "analytics_499549002", # kih / Dr Kiwi
+  "analytics_506154105", # lindle
+  "analytics_494547928", # yca
+]
+
+# After: bash Narrate/scripts/deploy_digest_fn.sh
+# digest_function_url = "https://….cloudfunctions.net/insights-digest"
+# digest_function_name = "insights-digest"
+

@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "product": "yca",
+  "period_date": "2026-09-08",
+  "period_start": "2026-09-01T00:00:00Z",
+  "period_end": "2026-09-08T00:00:00Z",
+  "sessions": 5320,
+  "sessions_delta_pct": 14.2,
+  "users": 1680,
+  "cloud_cost_usd": 156.80,
+  "cloud_cost_delta_pct": 1.1,
+  "ai_cost_usd": 22.50,
+  "reliability_flags": [
+    "job:yca-sync-crm:SLOW"
+  ],
+  "watch_bullets": [
+    "Strong session growth — confirm organic vs campaign",
+    "yca-sync-crm running slow; SLA risk if backlog grows",
+    "Costs stable relative to growth"
+  ]
+}

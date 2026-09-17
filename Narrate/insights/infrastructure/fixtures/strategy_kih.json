@@ -1,0 +1,251 @@
+{
+  "title": "KIH Go-to-Market Hold",
+  "executive_summary": "Seed strategy for KIH — Digests refresh this hold each weekly cadence.",
+  "market_analysis": {
+    "title": "Market analysis",
+    "content": "Consumer productivity niche; growth driven by organic + light paid.",
+    "subsections": [
+      {
+        "title": "Market size & growth",
+        "content": "Consumer productivity niche; growth driven by organic + light paid.",
+        "subsections": null
+      },
+      {
+        "title": "Trends",
+        "content": "See parent: Market analysis. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Competitive landscape",
+        "content": "See parent: Market analysis. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Barriers & opportunities",
+        "content": "See parent: Market analysis. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "target_segments": {
+    "title": "Target segments",
+    "content": "Power users and small teams evaluating workflow tools.",
+    "subsections": [
+      {
+        "title": "Primary segments",
+        "content": "Power users and small teams evaluating workflow tools.",
+        "subsections": null
+      },
+      {
+        "title": "Needs & jobs-to-be-done",
+        "content": "See parent: Target segments. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Prioritization",
+        "content": "See parent: Target segments. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "positioning_strategy": {
+    "title": "Positioning",
+    "content": "Fast, reliable insights with low ops overhead.",
+    "subsections": [
+      {
+        "title": "Positioning statement",
+        "content": "Fast, reliable insights with low ops overhead.",
+        "subsections": null
+      },
+      {
+        "title": "Differentiation",
+        "content": "See parent: Positioning. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Messaging pillars",
+        "content": "See parent: Positioning. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "product_strategy": {
+    "title": "Product strategy",
+    "content": "Ship digest loop; deepen Snapshot metrics before new surfaces.",
+    "subsections": [
+      {
+        "title": "Near-term bets",
+        "content": "Ship digest loop; deepen Snapshot metrics before new surfaces.",
+        "subsections": null
+      },
+      {
+        "title": "Roadmap themes",
+        "content": "See parent: Product strategy. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Success metrics",
+        "content": "See parent: Product strategy. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "pricing_strategy": {
+    "title": "Pricing",
+    "content": "TBD — track cloud + AI unit cost vs engagement.",
+    "subsections": [
+      {
+        "title": "Packaging",
+        "content": "TBD — track cloud + AI unit cost vs engagement.",
+        "subsections": null
+      },
+      {
+        "title": "Unit economics signals",
+        "content": "See parent: Pricing. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Experiments",
+        "content": "See parent: Pricing. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "distribution_strategy": {
+    "title": "Distribution",
+    "content": "Inbox Digests first; no product UI in MVP.",
+    "subsections": [
+      {
+        "title": "Primary channels",
+        "content": "Inbox Digests first; no product UI in MVP.",
+        "subsections": null
+      },
+      {
+        "title": "Partners",
+        "content": "See parent: Distribution. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Inbox / digest motion",
+        "content": "See parent: Distribution. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "marketing_plan": {
+    "title": "Marketing plan",
+    "content": "Weekly narrative from live metrics; amplify wins in skim.",
+    "subsections": [
+      {
+        "title": "This cadence themes",
+        "content": "Weekly narrative from live metrics; amplify wins in skim.",
+        "subsections": null
+      },
+      {
+        "title": "Channels",
+        "content": "See parent: Marketing plan. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Measurement",
+        "content": "See parent: Marketing plan. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "sales_strategy": {
+    "title": "Sales strategy",
+    "content": "n/a for MVP Digests.",
+    "subsections": [
+      {
+        "title": "Motion",
+        "content": "n/a for MVP Digests.",
+        "subsections": null
+      },
+      {
+        "title": "Pipeline focus",
+        "content": "See parent: Sales strategy. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "customer_success": {
+    "title": "Customer success",
+    "content": "Reliability flags surface in Digest; clear within one cadence.",
+    "subsections": [
+      {
+        "title": "Health signals",
+        "content": "Reliability flags surface in Digest; clear within one cadence.",
+        "subsections": null
+      },
+      {
+        "title": "Interventions",
+        "content": "See parent: Customer success. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "timeline_milestones": {
+    "title": "Timeline",
+    "content": "M1–M3 Digests; M4 BQ live; M5 Scheduler.",
+    "subsections": [
+      {
+        "title": "This cadence",
+        "content": "M1–M3 Digests; M4 BQ live; M5 Scheduler.",
+        "subsections": null
+      },
+      {
+        "title": "Next 30–90 days",
+        "content": "See parent: Timeline. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "budget_forecast": {
+    "title": "Budget forecast",
+    "content": "Seed — refreshed from Snapshot cloud/AI $ each run.",
+    "subsections": [
+      {
+        "title": "Cloud & AI spend",
+        "content": "Seed — refreshed from Snapshot cloud/AI $ each run.",
+        "subsections": null
+      },
+      {
+        "title": "Watch thresholds",
+        "content": "See parent: Budget forecast. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "risk_mitigation": {
+    "title": "Risk mitigation",
+    "content": "Watch failed jobs and cost spikes; escalate via Digest.",
+    "subsections": [
+      {
+        "title": "Active flags",
+        "content": "Watch failed jobs and cost spikes; escalate via Digest.",
+        "subsections": null
+      },
+      {
+        "title": "Mitigations",
+        "content": "See parent: Risk mitigation. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Owners / next check",
+        "content": "See parent: Risk mitigation. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "schema_version": 1,
+  "product": "kih",
+  "cadence": "weekly",
+  "period_date": "2026-09-01",
+  "product_description": "Keep It Healthy / Dr Kiwi — care and booking funnels.",
+  "target_market": "Patients and care providers evaluating digital health workflows.",
+  "budget_range": null,
+  "timeline_constraints": null,
+  "updated_at": null,
+  "refreshed_by": "seed"
+}

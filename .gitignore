@@ -15,38 +15,85 @@ dist/
 *.tsbuildinfo
 .dev-*.log
 
-# Secrets / local
+# Python
+**/__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# OS / IDE
 .DS_Store
+.idea/
+*.iml
+
+# ---------------------------------------------------------------------------
+# Secrets / credentials — never commit
+# ---------------------------------------------------------------------------
+
+# Env files (keep *.example)
 .env
-.env*
 .env.*
+**/.env
+**/.env.*
 !.env.example
 !**/.env.example
-secrets.json
-**/appsettings.Local.json
+!**/*.env.example
+
+# GCP / cloud credentials
+**/firebase.json
+**/sa.json
+**/*serviceAccount*.json
+**/*service-account*.json
+**/credentials.json
+**/application_default_credentials.json
+*-credentials.json
+*-key.json
+**/gcp-key*.json
+**/gcloud-key*.json
+
+# TLS / crypto material
+*.pem
+*.p12
+*.pfx
+*.key
+
+# Terraform secrets / local state
 terraform/.terraform/
 terraform/.terraform.lock.hcl
 terraform/terraform.tfvars
 terraform/*.auto.tfvars
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# App / API local secrets
+secrets.json
+**/secrets.json
+**/*secrets*.local.*
+**/env.local.yaml
+**/env.local.yml
+**/.env.local.yaml
+**/appsettings.Local.json
+**/appsettings.*.Local.json
+**/appsettings.Secrets.json
+
+# SMTP / token dumps
+**/smtp*.txt
+**/*api*key*.txt
+**/*token*.txt
+
+# Misc local match / agent state
 match-state.json
 **/matches/
 
-# Insights apps — never commit credentials
-**/firebase.json
-**/sa.json
-**/*serviceAccount*.json
-apps/decide/src/config.json
-Narrate/.venv/
-Narrate/venv/
-Decide/src/config.json
-Decide/node_modules/
+# Insights local stores
+Narrate/insights/infrastructure/fixtures/_strategy_store/
+
+# Prove frontend deps (if present)
 Prove/web/node_modules/
-
-# API tokens / local secret files
-Decide/serverless/env.yaml
-**/env.local.yaml
-**/*secrets*.local.*
-Narrate/.env
-Decide/.env
-Decide/.env.local
-

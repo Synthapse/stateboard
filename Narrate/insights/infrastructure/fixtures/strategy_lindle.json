@@ -1,0 +1,251 @@
+{
+  "title": "Lindle Go-to-Market Hold",
+  "executive_summary": "Seed strategy for Lindle — Digests refresh this hold each weekly cadence.",
+  "market_analysis": {
+    "title": "Market analysis",
+    "content": "B2B workflow; retention-sensitive to onboarding friction.",
+    "subsections": [
+      {
+        "title": "Market size & growth",
+        "content": "B2B workflow; retention-sensitive to onboarding friction.",
+        "subsections": null
+      },
+      {
+        "title": "Trends",
+        "content": "See parent: Market analysis. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Competitive landscape",
+        "content": "See parent: Market analysis. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Barriers & opportunities",
+        "content": "See parent: Market analysis. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "target_segments": {
+    "title": "Target segments",
+    "content": "Ops and product teams needing lightweight planning.",
+    "subsections": [
+      {
+        "title": "Primary segments",
+        "content": "Ops and product teams needing lightweight planning.",
+        "subsections": null
+      },
+      {
+        "title": "Needs & jobs-to-be-done",
+        "content": "See parent: Target segments. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Prioritization",
+        "content": "See parent: Target segments. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "positioning_strategy": {
+    "title": "Positioning",
+    "content": "Simple, measurable outcomes over feature sprawl.",
+    "subsections": [
+      {
+        "title": "Positioning statement",
+        "content": "Simple, measurable outcomes over feature sprawl.",
+        "subsections": null
+      },
+      {
+        "title": "Differentiation",
+        "content": "See parent: Positioning. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Messaging pillars",
+        "content": "See parent: Positioning. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "product_strategy": {
+    "title": "Product strategy",
+    "content": "Stabilize growth metrics; cut idle cloud cost.",
+    "subsections": [
+      {
+        "title": "Near-term bets",
+        "content": "Stabilize growth metrics; cut idle cloud cost.",
+        "subsections": null
+      },
+      {
+        "title": "Roadmap themes",
+        "content": "See parent: Product strategy. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Success metrics",
+        "content": "See parent: Product strategy. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "pricing_strategy": {
+    "title": "Pricing",
+    "content": "Track cost-to-serve vs session quality.",
+    "subsections": [
+      {
+        "title": "Packaging",
+        "content": "Track cost-to-serve vs session quality.",
+        "subsections": null
+      },
+      {
+        "title": "Unit economics signals",
+        "content": "See parent: Pricing. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Experiments",
+        "content": "See parent: Pricing. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "distribution_strategy": {
+    "title": "Distribution",
+    "content": "Email Digests to stakeholders; Slack later.",
+    "subsections": [
+      {
+        "title": "Primary channels",
+        "content": "Email Digests to stakeholders; Slack later.",
+        "subsections": null
+      },
+      {
+        "title": "Partners",
+        "content": "See parent: Distribution. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Inbox / digest motion",
+        "content": "See parent: Distribution. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "marketing_plan": {
+    "title": "Marketing plan",
+    "content": "Narrative from Snapshot deltas; call out soft sessions early.",
+    "subsections": [
+      {
+        "title": "This cadence themes",
+        "content": "Narrative from Snapshot deltas; call out soft sessions early.",
+        "subsections": null
+      },
+      {
+        "title": "Channels",
+        "content": "See parent: Marketing plan. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Measurement",
+        "content": "See parent: Marketing plan. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "sales_strategy": {
+    "title": "Sales strategy",
+    "content": "n/a for MVP Digests.",
+    "subsections": [
+      {
+        "title": "Motion",
+        "content": "n/a for MVP Digests.",
+        "subsections": null
+      },
+      {
+        "title": "Pipeline focus",
+        "content": "See parent: Sales strategy. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "customer_success": {
+    "title": "Customer success",
+    "content": "Onboarding drop-off is a watch theme.",
+    "subsections": [
+      {
+        "title": "Health signals",
+        "content": "Onboarding drop-off is a watch theme.",
+        "subsections": null
+      },
+      {
+        "title": "Interventions",
+        "content": "See parent: Customer success. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "timeline_milestones": {
+    "title": "Timeline",
+    "content": "Align Digest cadence with weekly ops review.",
+    "subsections": [
+      {
+        "title": "This cadence",
+        "content": "Align Digest cadence with weekly ops review.",
+        "subsections": null
+      },
+      {
+        "title": "Next 30–90 days",
+        "content": "See parent: Timeline. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "budget_forecast": {
+    "title": "Budget forecast",
+    "content": "Seed — refreshed from Snapshot each run.",
+    "subsections": [
+      {
+        "title": "Cloud & AI spend",
+        "content": "Seed — refreshed from Snapshot each run.",
+        "subsections": null
+      },
+      {
+        "title": "Watch thresholds",
+        "content": "See parent: Budget forecast. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "risk_mitigation": {
+    "title": "Risk mitigation",
+    "content": "Idle resources and acquisition quality.",
+    "subsections": [
+      {
+        "title": "Active flags",
+        "content": "Idle resources and acquisition quality.",
+        "subsections": null
+      },
+      {
+        "title": "Mitigations",
+        "content": "See parent: Risk mitigation. Refine with live Snapshot.",
+        "subsections": null
+      },
+      {
+        "title": "Owners / next check",
+        "content": "See parent: Risk mitigation. Refine with live Snapshot.",
+        "subsections": null
+      }
+    ]
+  },
+  "schema_version": 1,
+  "product": "lindle",
+  "cadence": "weekly",
+  "period_date": "2026-09-01",
+  "product_description": "Lindle — tenant/agent workflow product.",
+  "target_market": "Ops and product teams needing lightweight planning.",
+  "budget_range": null,
+  "timeline_constraints": null,
+  "updated_at": null,
+  "refreshed_by": "seed"
+}

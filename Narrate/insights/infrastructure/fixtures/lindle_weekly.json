@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "product": "lindle",
+  "period_date": "2026-09-08",
+  "period_start": "2026-09-01T00:00:00Z",
+  "period_end": "2026-09-08T00:00:00Z",
+  "sessions": 8650,
+  "sessions_delta_pct": -2.1,
+  "users": 2410,
+  "cloud_cost_usd": 289.40,
+  "cloud_cost_delta_pct": 5.6,
+  "ai_cost_usd": 41.20,
+  "reliability_flags": [],
+  "watch_bullets": [
+    "Sessions soft WoW — check onboarding drop-off",
+    "Cloud $ up 5.6% with flat traffic; review idle resources",
+    "AI spend still small vs cloud; watch Gemini quota"
+  ]
+}

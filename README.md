@@ -1,62 +1,67 @@
 # Insights (monorepo)
 
-**Decide** + **Narrate** + **Prove** in one repo (formerly Stateboard).  
-Legacy repos Aureyo / Raporting should be archived after deploy is green.
+**Narrate** (Digests) + **Prove** (optional infra UI). Formerly Stateboard.  
+**No Decide / business UI** — delivery is Slack / email only.
 
-**North star:** weekly/monthly Digests (Slack / email) from BigQuery for `kih` · `lindle` · `yca`.
+**North star:** weekly/monthly Digests from BigQuery for `kih` · `lindle` · `yca`.
+
+## Main doc
+
+**[docs/Analytics & Insights Plan.md](docs/Analytics%20%26%20Insights%20Plan.md)** — product strategy, lenses, questions, warehouse.
+
+**Build / MVP (follow these for implementation):**
+
+| Doc | Purpose |
+|-----|---------|
+| [docs/mvp-architecture.md](docs/mvp-architecture.md) | Architecture + MVP slices |
+| [docs/insights-architecture.md](docs/insights-architecture.md) | System architecture: data flow, benefits, improvements |
+| [docs/implement-digests.md](docs/implement-digests.md) | Narrate Digests + GenAI + strategy holds |
+| [docs/bigquery-load-paths.md](docs/bigquery-load-paths.md) | How GA4 / Billing / Langfuse load |
+| [docs/bigquery-terraform.md](docs/bigquery-terraform.md) | TF datasets/tables |
 
 ## Layout
 
 ```
-Decide/                 # on-demand UI (ex Aureyo)
-Narrate/                # Digest engine FastAPI (ex Raporting)
+Narrate/                # Digest engine → Slack/email (ex Raporting)
 Prove/
-  web/                  # hex map / cost / health UI
+  web/                  # optional hex map / cost / health
   Stateboard.Api/       # .NET API
-  Stateboard.Core/      # HCL → graph, cost
-packages/tf-cost/       # shared TS helpers
+  Stateboard.Core/
+packages/tf-cost/
+docs/                   # Analytics & Insights Plan = main strategy doc
+terraform/              # Prove infra + BigQuery structure
 ```
-
-Still three deployables from one git tree.
 
 ## Quick start
 
-### Prove API + web
+### Narrate (hero)
+
+```bash
+cd Narrate
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env   # gitignored
+# see Narrate/README.md for digest_run smoke tests
+```
+
+Secrets: `Narrate/SECRETS.md` · `.env.example`.
+
+### Prove (optional)
 
 ```bash
 dotnet run --project Prove/Stateboard.Api --urls http://localhost:5281
 npm install && npm run dev
 ```
 
-### Narrate
+## Status
 
-```bash
-cd Narrate
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn main:app --reload --port 8000
-```
-
-Secrets: see `Narrate/SECRETS.md` — never commit Firebase/SA JSON.
-
-### Decide
-
-```bash
-cd Decide
-cp src/config.example.json src/config.json   # local only; gitignored
-npm install && npm start
-```
-
-## Merge status
-
-- [x] Import Decide + Narrate; folder layout `Decide/` `Narrate/` `Prove/`
-- [ ] Wire Digest schedule → Slack/email
-- [ ] Rename GitHub repo `stateboard` → `insights` (when ready)
-- [ ] Archive Synthapse/Aureyo + Synthapse/Raporting
-
-**Next week:** see [docs/mvp-architecture.md](docs/mvp-architecture.md) — Architecture + MVP (M1–M5).
+- [x] Narrate + Prove in monorepo; Decide UI dropped  
+- [x] Main strategy doc in repo (`docs/Analytics & Insights Plan.md`)  
+- [ ] Digest M4–M5 (live BQ + Scheduler) — see implement-digests  
+- [ ] `terraform apply` for BQ datasets  
+- [ ] Archive Aureyo + Raporting when green  
 
 ## Deploy
 
-Today: `stateboard.synthapse.xyz` / Cloud Run `stateboard-api` on cognispace.  
+Prove today: `stateboard.synthapse.xyz` / Cloud Run `stateboard-api`.  
 See `docs/deploy-gcp.md`.
